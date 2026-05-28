@@ -1,0 +1,13 @@
+{
+  "name": "report-generator",
+  "version": "1.0.0",
+  "description": "A simple document generation setup that uses [Pandoc](https://pandoc.org/) to convert Markdown files into a styled OpenDocument Text (.odt) report.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
