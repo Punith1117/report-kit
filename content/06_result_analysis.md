@@ -12,12 +12,19 @@ The project was tested under normal room temperature conditions as well as eleva
 
 The following observations were recorded during the testing of the system:
 
-| Sl. No | Temperature Condition | Buzzer Status | System Response |
-|--------|---------------------|--------------|-----------------|
-| 1 | Temperature below threshold | OFF | Normal monitoring |
-| 2 | Temperature equal to threshold | OFF | Continuous monitoring |
-| 3 | Temperature above threshold | ON | Alert generated |
-| 4 | Sensor disconnected | OFF | Error message displayed |
+-------- -------------------------------- --------------- -------------------------
+ Sl. No   Temperature Condition            Buzzer Status  System Response
+-------- -------------------------------- --------------- -------------------------
+ 1        Temperature below threshold      OFF            Normal monitoring
+ 
+ 2        Temperature equal to threshold   OFF            Continuous monitoring
+ 
+ 3        Temperature above threshold      ON             Alert generated
+ 
+ 4        Sensor disconnected              OFF            Error message displayed
+-------- -------------------------------- --------------- -------------------------
+
+Table 6.1: Result Observations
 
 The obtained results indicate that the proposed system performs reliable temperature monitoring and alert generation. The ESP32 controller successfully processed the temperature data from the DHT22 sensor and activated the buzzer whenever the threshold condition was satisfied.
 
@@ -48,13 +55,13 @@ The following snapshots were captured during the implementation and testing of t
 - Buzzer activation during high temperature condition
 - Arduino IDE program upload screen
 
-**Figure 6.1: Hardware Setup of Proposed System**
+![Figure 6.1: Hardware Setup of Proposed System](assets/images/result.png){width=5in height=3.5in}
 
-**Figure 6.2: Circuit Connection of ESP32 and DHT22**
+![Figure 6.2: Circuit Connection of ESP32 and DHT22](assets/images/result.png){width=5in height=3.5in}
 
-**Figure 6.3: Serial Monitor Output**
+![Figure 6.3: Serial Monitor Output](assets/images/result.png){width=5in height=3.5in}
 
-**Figure 6.4: Buzzer Alert during High Temperature Detection**
+![Figure 6.4: Buzzer Alert during High Temperature Detection](assets/images/result.png){width=5in height=3.5in}
 
 ---
 

@@ -24,15 +24,25 @@ The system continuously accepts temperature data as input from the DHT22 sensor.
 
 ## 3.2 Hardware Requirements
 
-| Sl. No | Hardware Component | Purpose |
-|--------|--------------------|---------|
-| 1 | ESP32 Microcontroller | Processes sensor data and controls system operation |
-| 2 | DHT22 Temperature Sensor | Measures environmental temperature |
-| 3 | Buzzer | Generates alert sound during high temperature |
-| 4 | Breadboard | Used for circuit connections |
-| 5 | Jumper Wires | Connects hardware components |
-| 6 | USB Data Cable | Uploads code and powers ESP32 |
-| 7 | Power Supply | Provides electrical power to the system |
+-------- -------------------------- -----------------------------------------------------
+ Sl. No   Hardware Component         Purpose
+-------- -------------------------- -----------------------------------------------------
+ 1        ESP32 Microcontroller      Processes sensor data and controls system operation
+ 
+ 2        DHT22 Temperature Sensor   Measures environmental temperature
+ 
+ 3        Buzzer                     Generates alert sound during high temperature
+ 
+ 4        Breadboard                 Used for circuit connections
+ 
+ 5        Jumper Wires               Connects hardware components
+ 
+ 6        USB Data Cable             Uploads code and powers ESP32
+ 
+ 7        Power Supply               Provides electrical power to the system
+-------- -------------------------- -----------------------------------------------------
+
+Table 3.1: Hardware Requirements
 
 The ESP32 microcontroller acts as the main controller of the system. The DHT22 sensor continuously senses the temperature and sends the measured values to the ESP32. The buzzer acts as an output device and produces an alert sound whenever the temperature crosses the threshold limit.
 
@@ -40,13 +50,21 @@ The ESP32 microcontroller acts as the main controller of the system. The DHT22 s
 
 ## 3.3 Software Requirements
 
-| Sl. No | Software | Purpose |
-|--------|----------|---------|
-| 1 | Arduino IDE | Writing and uploading program code |
-| 2 | Embedded C | Programming language used for coding |
-| 3 | ESP32 Board Package | Supports ESP32 programming in Arduino IDE |
-| 4 | DHT Sensor Library | Enables communication with DHT22 sensor |
-| 5 | Serial Monitor | Displays real-time temperature readings |
+-------- --------------------- -------------------------------------------
+ Sl. No   Software              Purpose
+-------- --------------------- -------------------------------------------
+ 1        Arduino IDE           Writing and uploading program code
+ 
+ 2        Embedded C            Programming language used for coding
+ 
+ 3        ESP32 Board Package   Supports ESP32 programming in Arduino IDE
+ 
+ 4        DHT Sensor Library    Enables communication with DHT22 sensor
+ 
+ 5        Serial Monitor        Displays real-time temperature readings
+-------- --------------------- -------------------------------------------
+
+Table 3.2: Software Requirements
 
 Arduino IDE is used for developing and uploading the program code to the ESP32 microcontroller. Embedded C language is used for implementing the control logic of the system. The DHT sensor library allows the ESP32 to communicate with the DHT22 sensor and read temperature values efficiently.
 
