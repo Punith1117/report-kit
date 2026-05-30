@@ -62,13 +62,13 @@ Template enforces:
 - Body text: justified
 - First paragraph: bold + justified (section intro style)
 
-### 3. Page Breaks
+### 3. Page Breaks, Enter and Spaces
 
-Use: `\newpage` or `\pagebreak`
+Use: `\newpage` or `\pagebreak` for new page - Handled by: filters/pagebreak.lua
 
-Handled by:
+Use: `&nbsp` for space and `&emsp` for tab space.
 
-filters/pagebreak.lua
+Use: `\` for Enter.
 
 ### 4. Images (Centered with Caption)
 Correct syntax:
