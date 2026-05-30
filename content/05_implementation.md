@@ -91,25 +91,20 @@ void setup() {
 }
 
 void loop() {
-
   float temperature = dht.readTemperature();
-
   if (isnan(temperature)) {
     Serial.println("Failed to read from DHT sensor!");
     return;
   }
-
   Serial.print("Temperature: ");
   Serial.print(temperature);
   Serial.println(" °C");
-
   if (temperature > threshold) {
     digitalWrite(BUZZER_PIN, HIGH);
     Serial.println("ALERT! HIGH TEMPERATURE!");
   } else {
     digitalWrite(BUZZER_PIN, LOW);
   }
-  
   delay(2000);
 }
 ```

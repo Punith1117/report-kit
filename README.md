@@ -146,6 +146,78 @@ Your `template.odt` controls all document styling rules.
 
 ---
 
+## 🧩 LibreOffice Macro Support (Table Borders Automation)
+
+This project optionally uses a LibreOffice macro to automatically apply borders to all tables in the generated `.odt` file.
+
+---
+
+## ⚙️ Macro Purpose
+
+Pandoc does not generate table borders in ODT output.
+
+To fix this, a LibreOffice macro is used to:
+
+- Detect all tables in the document  
+- Apply consistent border styling  
+- Ensure uniform report formatting  
+
+---
+
+## 📜 Macro Code Location
+
+The macro is stored in:
+```
+reference.odt -> LibreOffice Basic -> Module1
+```
+
+Macro name:
+```
+AddBordersToAllTables
+```
+
+---
+
+## ▶️ How to Run Manually
+
+Inside LibreOffice Writer:
+
+```
+Tools -> Macros -> Run Macro ->
+My Macros -> Standard -> Module1 -> AddBordersToAllTables
+```
+
+---
+
+## 🔐 IMPORTANT: Enable Macros (Security Settings)
+
+By default, LibreOffice disables macros for safety.
+You must enable them for this project.
+
+---
+
+## ✔️ Steps
+
+Navigate to:
+
+```
+Tools -> Options -> LibreOffice -> Security -> Macro Security
+```
+
+Set to:
+
+```
+MEDIUM (recommended for local development)
+```
+
+OR:
+
+```
+LOW (not recommended, but enables fully automated execution)
+```
+
+---
+
 ## 🔄 Convert ODT → DOCX
 
 After generating the `.odt` file:
