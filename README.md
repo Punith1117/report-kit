@@ -82,6 +82,77 @@ This removes the need to manually maintain:
 
 The only manual input required is page numbers (as per academic formatting requirements).
 
+---
+
+## ⚙️ Design Tradeoffs
+
+This system is intentionally built around deterministic, local-first document generation using Pandoc and LibreOffice. The design choices below explain why certain tools were selected over more complex or “modern” alternatives.
+
+### 🧩 Why Pandoc instead of a custom renderer
+
+Pandoc is used as the core conversion engine instead of building a custom Markdown-to-ODT pipeline.
+
+**Reasoning:**
+- Pandoc already implements a battle-tested Markdown AST parser
+- Handles edge cases (tables, lists, nested structures) that are easy to get wrong in custom parsers
+- Supports multiple output formats (ODT, DOCX, PDF) without rewriting logic
+- Maintains deterministic conversion behavior across environments
+
+**Tradeoff:**
+- Less low-level control over final document internals
+- Requires working within Pandoc’s abstraction layer instead of full custom formatting logic
+
+---
+
+### 🧠 Why Lua filters instead of post-processing scripts
+
+All structural transformations (numbering, index generation, page breaks) are implemented as Pandoc Lua filters.
+
+**Reasoning:**
+- Operate directly on Pandoc’s AST (structured, not string-based)
+- Avoid brittle regex-based Markdown parsing
+- Execute during compilation, not after rendering
+- Keep transformation logic declarative and modular
+
+**Tradeoff:**
+- Requires understanding Pandoc AST model
+- Debugging is less intuitive than plain Node.js scripts
+- Limited ecosystem compared to general-purpose scripting
+
+---
+
+### 📄 Why ODT instead of DOCX-first
+
+The output format is OpenDocument Text (.odt) instead of directly targeting Microsoft Word formats.
+
+**Reasoning:**
+- LibreOffice provides reliable headless conversion tooling
+- ODT is more stable for template-driven styling in open-source workflows
+- Easier to embed consistent style templates (`reference.odt`)
+- Avoids Microsoft Office-specific formatting inconsistencies
+
+**Tradeoff:**
+- DOCX is more widely used in corporate environments
+- Some styling parity differences may exist when converting ODT -> DOCX later
+
+---
+
+### 🔧 Why LibreOffice macro is tolerated (table borders limitation)
+
+Pandoc does not generate reliable table borders in ODT output, so a LibreOffice macro is used as a post-processing step.
+
+**Reasoning:**
+- Ensures consistent table styling without modifying Pandoc internals
+- Keeps Markdown clean and focused on content, not presentation hacks
+- Applies uniform styling after document generation in a controlled environment
+
+**Tradeoff:**
+- Requires macro security configuration on user systems
+- Adds dependency on LibreOffice runtime behavior
+- Breaks full portability if macros are disabled or restricted
+
+---
+
 ## Template (ODT Styling System)
 
 Your `template.odt` controls all document styling rules.
