@@ -1,4 +1,4 @@
-# 1. INTRODUCTION
+# INTRODUCTION
 
 Temperature monitoring systems are widely used in industries, laboratories, homes, data centers, and safety applications to detect abnormal environmental conditions and prevent damage caused by overheating. Continuous monitoring of temperature is essential in many applications because sudden increases in temperature may lead to equipment failure, fire hazards, reduced system performance, and safety risks. Traditional methods of temperature monitoring often require manual observation, which can be time-consuming, inefficient, and less reliable in critical situations. Therefore, automated temperature monitoring systems have become increasingly important in modern embedded and IoT-based applications.
 

@@ -1,4 +1,4 @@
-# 5. IMPLEMENTATION
+# IMPLEMENTATION
 
 The Implementation chapter explains the practical development and execution of the proposed Temperature Monitoring and Alert System using ESP32. This chapter describes the hardware setup, software configuration, sensor interfacing, and program implementation used for developing the system. The implementation process involves connecting the DHT22 temperature sensor and buzzer to the ESP32 microcontroller and programming the controller using Arduino IDE.
 
@@ -8,7 +8,7 @@ The project is implemented using simple hardware components and embedded program
 
 ---
 
-## 5.1 Hardware Implementation
+## Hardware Implementation
 
 The hardware implementation involves interfacing the DHT22 sensor and buzzer with the ESP32 microcontroller. The DHT22 sensor acts as the input device and continuously senses environmental temperature. The ESP32 microcontroller acts as the processing unit and controls the overall operation of the system. The buzzer acts as the output device and generates an alert sound whenever the temperature exceeds the threshold value.
 
@@ -34,7 +34,7 @@ The DHT22 sensor sends temperature readings to the ESP32 through GPIO4 pin. The 
 
 ---
 
-## 5.2 Software Configuration
+## Software Configuration
 
 The software implementation of the project is carried out using Arduino IDE. The ESP32 board package and DHT sensor library are installed in the Arduino IDE to support programming and communication with the sensor.
 
@@ -51,7 +51,7 @@ The Arduino IDE is used to write, compile, and upload the program code to the ES
 
 ---
 
-## 5.3 Program Code
+## Program Code
 
 The program code is written using Embedded C language in Arduino IDE. The program continuously reads temperature values from the DHT22 sensor and compares them with the predefined threshold value. If the temperature exceeds the threshold limit, the buzzer is activated automatically.
 

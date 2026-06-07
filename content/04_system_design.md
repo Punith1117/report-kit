@@ -1,4 +1,4 @@
-# 4. SYSTEM DESIGN
+# SYSTEM DESIGN
 
 The System Design chapter explains the structure and working model of the proposed Temperature Monitoring and Alert System using ESP32. The chapter describes how different hardware and software components are organized and connected to perform continuous temperature monitoring and automatic alert generation. The system is designed to monitor environmental temperature using the DHT22 sensor and activate a buzzer whenever the temperature exceeds a predefined threshold value.
 
@@ -8,7 +8,7 @@ The system is designed using simple embedded system architecture to ensure relia
 
 ---
 
-## 4.1 System Architecture
+## System Architecture
 
 The System Architecture explains the overall structure and interaction between the hardware and software components used in the project. The architecture of the proposed system mainly consists of DHT22 temperature sensor, ESP32 microcontroller, buzzer alert system, and Serial Monitor interface.
 
@@ -44,7 +44,7 @@ The architecture diagram clearly shows the flow of data from the DHT22 sensor to
 
 ---
 
-## 4.2 Data Flow Diagrams (DFD) / Flow Charts
+## Data Flow Diagrams (DFD) / Flow Charts
 
 This section explains the flow of information and operational sequence within the system. The Data Flow Diagram (DFD) and Flow Chart help in understanding how the system processes sensor data and generates output based on temperature conditions.
 
@@ -70,7 +70,7 @@ The Level 1 DFD shows that the DHT22 sensor sends temperature data to the ESP32 
 
 ---
 
-## 4.3 Flow Chart
+## Flow Chart
 
 The flow chart represents the complete operational sequence of the Temperature Monitoring and Alert System using ESP32.
 

@@ -1,8 +1,8 @@
-# 7. CONCLUSION AND FUTURE WORK
+# CONCLUSION AND FUTURE WORK
 
 ---
 
-## 7.1 CONCLUSION
+## CONCLUSION
 
 The Temperature Monitoring and Alert System using ESP32 was successfully designed and implemented using embedded system and sensor interfacing concepts. The system continuously monitored environmental temperature using the DHT22 temperature sensor and generated an alert whenever the temperature exceeded the predefined threshold value. The ESP32 microcontroller successfully processed the sensor data and controlled the buzzer output efficiently.
 
@@ -12,7 +12,7 @@ The proposed system provides a simple, low-cost, reliable, and efficient solutio
 
 ---
 
-## 7.2 LIMITATIONS AND FUTURE WORK
+## LIMITATIONS AND FUTURE WORK
 
 Although the proposed system performs reliable temperature monitoring and alert generation, there are certain limitations in the current implementation. The system currently operates as a standalone embedded monitoring system without remote monitoring capability. The project also uses only a buzzer alert mechanism and does not provide mobile or internet-based notifications.
 

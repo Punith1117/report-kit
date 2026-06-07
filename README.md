@@ -20,7 +20,15 @@ A simple document generation setup that uses [Pandoc](https://pandoc.org/) to co
 - **`build.sh`**: The main build script that runs the Pandoc command.
 - **`content/`**: Directory containing the Markdown source files for the report. Files are typically numbered to enforce a specific ordering during concatenation (e.g., `01_introduction.md`).
 - **`assets/`**: Directory for storing static assets like images used in the Markdown files.
-- **`filters/`**: Contains Pandoc Lua filters. Includes `pagebreak.lua` which translates LaTeX-style `\newpage` or `\pagebreak` commands into proper ODT/Word page breaks.
+- **`filters/`**: Pandoc Lua filters that automate document structure.
+
+  These filters remove the need for manual formatting tasks such as numbering and index creation.
+
+  Includes:
+  - `pagebreak.lua` → converts `\newpage` / `\pagebreak` into real ODT page breaks  
+  - `number-h1.lua` → automatically generates chapter numbering (1, 2, 3...)  
+  - `number-h2.lua` → automatically generates hierarchical section numbering (1.1, 1.2...)  
+  - `index.lua` → generates Index table automatically from Heading 1 structure
 - **`reference.odt`**: The reference OpenDocument template used to style the output report.
 - **`output/`**: The generated report (`report.odt`) will be saved here.
 
@@ -39,78 +47,42 @@ This script will:
 4. Style the document using `reference.odt`.
 5. Output the final report to `output/report.odt`.
 
-## Markdown Syntax Guide (PROJECT STANDARD)
+This pipeline ensures that document structure is always derived from content, not manually maintained formatting.
 
-This project uses Pandoc-compatible Markdown only.
+## 📘 Writing Guide
 
-### 1. Headings (Template-driven)
-Level	Style
-# Heading 1	16pt Bold
-## Heading 2	14pt Bold
-### Heading 3	12pt Bold
+All document writing rules are defined in: `syntax-guide.md`
 
-Rules:
+## 🧠 Automated Document Structure
 
-Heading 1 → major chapters
-Heading 2 → sections
-Heading 3 → subsections
+This system eliminates manual document maintenance by deriving structure from Markdown content.
 
-### 2. Paragraph Styling (Template controlled)
+Previously, users had to:
 
-Template enforces:
+- manually number chapters and sections
+- update numbering after adding/removing content
+- maintain index tables separately from content
 
-- Body text: justified
-- First paragraph: bold + justified (section intro style)
+Now:
 
-### 3. Page Breaks, Enter and Spaces
+- numbering is generated automatically (`1. `, `2. ` for `Heading 1` and  `1.1 `, `1.2 ` for `Heading 2`)
+- index is derived directly from document structure
+- formatting is handled by template and filters
+- content remains the only source of truth
 
-Use: `\newpage` or `\pagebreak` for new page - Handled by: filters/pagebreak.lua
+## 📘 Index Generation
 
-Use: `&nbsp` for space and `&emsp` for tab space.
+The Index is automatically generated from all Heading 1 elements in the document.
 
-Use: `\` for Enter.
+This removes the need to manually maintain:
 
-### 4. Images (Centered with Caption)
-Correct syntax:
-`![Figure 4.1: System Architecture](assets/images/architecture.png)`
+- chapter ordering
+- serial numbers
+- index table updates after edits
 
-Requirements:
+The only manual input required is page numbers (as per academic formatting requirements).
 
-Must be alone in paragraph
-Caption is auto-derived from alt text
-Centering is handled by template styling
-
-### 5. Tables (IMPORTANT RULE)
-
-Mandatory constraint:
-
-Pandoc-generated tables DO NOT include borders automatically.
-
-Recommended table format:
-
-```
--------- --------------------- -------------------------------------------
- Sl. No   Software              Purpose
--------- --------------------- -------------------------------------------
- 1        Arduino IDE           Writing and uploading program code
- 
- 2        Embedded C            Programming language used for coding
- 
- 3        ESP32 Board Package   Supports ESP32 programming in Arduino IDE
- 
- 4        DHT Sensor Library    Enables communication with DHT22 sensor
- 
- 5        Serial Monitor        Displays real-time temperature readings
--------- --------------------- -------------------------------------------
-```
-
-> **IMPORTANT NOTE** : Table borders are NOT automatically applied by Pandoc or ODT templates. Borders must be manually added
-
-### 6. Column Width of Table Behavior
-
-Use hyphens between header and first content row in the table to increase/decrease column width.
-
-## 7. Template (ODT Styling System)
+## Template (ODT Styling System)
 
 Your `template.odt` controls all document styling rules.
 
@@ -126,16 +98,18 @@ Your `template.odt` controls all document styling rules.
 
 ### 📄 Paragraph Styles
 
-- Body text → justified  
-- First paragraph → bold + justified  
+- Body text -> justified  
+- First paragraph -> justified  
 
 ---
 
 ### 📄 Tables
 
-- Cell padding is configured via LibreOffice table styles  
-- Table borders are **not automatically generated**  
-- Borders must be manually enabled in the table style editor  
+- Tables are written using Pandoc-compatible Markdown
+- Column alignment and structure are handled by Pandoc + ODT template
+- Table borders should be applied using a LibreOffice macro after generation manually
+
+This avoids manual table formatting inside Markdown files and keeps content focused on data rather than styling.
 
 ---
 
@@ -218,7 +192,7 @@ LOW (not recommended, but enables fully automated execution)
 
 ---
 
-## 🔄 Convert ODT → DOCX
+## 🔄 Convert ODT -> DOCX
 
 After generating the `.odt` file:
 
@@ -228,12 +202,13 @@ libreoffice --headless --convert-to docx output/report.odt --outdir output
 
 ## 🚀 Design Philosophy
 
-This system is built with a focus on reliable and predictable document generation.
+This system treats Markdown as structured input rather than formatted text.
 
-It prioritizes:
+The build pipeline transforms raw content into a fully structured document by:
 
-- Deterministic output across all builds  
-- Reproducible formatting regardless of environment  
-- Template-driven styling for consistent visual structure  
-- Minimal runtime complexity and dependencies  
-- Offline-first workflow with no cloud service reliance  
+- deriving numbering from document hierarchy for heading 1 and heading 2
+- generating Index automatically
+- enforcing consistency between sections and references
+- eliminating manual synchronization tasks
+
+This allows authors to focus entirely on content creation while formatting and structure are handled deterministically during build time.

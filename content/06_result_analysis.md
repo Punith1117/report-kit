@@ -1,4 +1,4 @@
-# 6. RESULT ANALYSIS
+# RESULT ANALYSIS
 
 The Result Analysis chapter explains the performance and output obtained from the implementation of the Temperature Monitoring and Alert System using ESP32. The system was successfully tested under different temperature conditions to verify the proper operation of the DHT22 temperature sensor, ESP32 microcontroller, and buzzer alert mechanism. The project demonstrated reliable temperature monitoring and immediate alert generation whenever the temperature exceeded the predefined threshold value.
 
@@ -8,7 +8,7 @@ The project was tested under normal room temperature conditions as well as eleva
 
 ---
 
-## 6.1 Results
+## Results
 
 The following observations were recorded during the testing of the system:
 
@@ -30,7 +30,7 @@ The obtained results indicate that the proposed system performs reliable tempera
 
 ---
 
-## 6.2 Performance Analysis
+## Performance Analysis
 
 The implemented system provides the following advantages:
 
@@ -45,7 +45,7 @@ The DHT22 sensor provided stable and accurate temperature readings throughout th
 
 ---
 
-## 6.3 Snapshots
+## Snapshots
 
 The following snapshots were captured during the implementation and testing of the project:
 

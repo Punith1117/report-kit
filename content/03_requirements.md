@@ -1,4 +1,4 @@
-# 3. REQUIREMENT ANALYSIS AND FEASIBILITY STUDY
+# REQUIREMENT ANALYSIS AND FEASIBILITY STUDY
 
 The Requirement Analysis and Feasibility Study chapter explains the requirements necessary for the successful development and implementation of the Temperature Monitoring and Alert System using ESP32. Proper requirement analysis helps in understanding the operation of the system, identifying the required hardware and software resources, and ensuring reliable system performance. This chapter also helps in reducing errors during development and improving the overall efficiency of the project.
 
@@ -6,7 +6,7 @@ The proposed system is designed to continuously monitor environmental temperatur
 
 ---
 
-## 3.1 Functional Requirements
+## Functional Requirements
 
 The functional requirements describe the major functions performed by the system. The Temperature Monitoring and Alert System performs the following functions:
 
@@ -22,7 +22,7 @@ The system continuously accepts temperature data as input from the DHT22 sensor.
 
 ---
 
-## 3.2 Hardware Requirements
+## Hardware Requirements
 
 -------- -------------------------- -----------------------------------------------------
  Sl. No   Hardware Component         Purpose
@@ -48,7 +48,7 @@ The ESP32 microcontroller acts as the main controller of the system. The DHT22 s
 
 ---
 
-## 3.3 Software Requirements
+## Software Requirements
 
 -------- --------------------- -------------------------------------------
  Sl. No   Software              Purpose
