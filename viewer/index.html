@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Report Preview</title>
+
+  <style>
+    html, body {
+      margin: 0;
+      height: 100%;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+
+<iframe
+  id="pdf"
+  src="/output/report.pdf">
+</iframe>
+
+<script>
+const iframe = document.getElementById("pdf");
+
+const protocol =
+  location.protocol === "https:"
+    ? "wss:"
+    : "ws:";
+
+const ws = new WebSocket(
+  `${protocol}//${location.host}`
+);
+
+ws.onmessage = (event) => {
+  if (event.data === "reload") {
+
+    console.log("Reloading PDF...");
+
+    iframe.src =
+      `/output/report.pdf?t=${Date.now()}`;
+  }
+};
+
+ws.onclose = () => {
+  console.log("WebSocket disconnected");
+};
+</script>
+
+</body>
+</html>

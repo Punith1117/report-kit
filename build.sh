@@ -11,3 +11,11 @@ pandoc content/*.md \
   --lua-filter=filters/pagebreak.lua \
 
 echo "Build complete: output/report.odt"
+
+soffice \
+  --headless \
+  --convert-to pdf \
+  output/report.odt \
+  --outdir output
+
+echo "Generated: output/report.pdf"

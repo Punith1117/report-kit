@@ -4,10 +4,17 @@
   "description": "A simple document generation setup that uses [Pandoc](https://pandoc.org/) to convert Markdown files into a styled OpenDocument Text (.odt) report.",
   "main": "index.js",
   "scripts": {
+    "build": "./build.sh",
+    "preview": "node preview.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "dependencies": {
+    "chokidar": "^5.0.0",
+    "express": "^5.2.1",
+    "ws": "^8.21.0"
+  }
 }
