@@ -1,285 +1,364 @@
 # Markdown Report Generator
 
-A simple document generation setup that uses [Pandoc](https://pandoc.org/) to convert Markdown files into a styled OpenDocument Text (.odt) report.
+A local-first document generation system that converts Markdown into a styled ODT document and PDF, with a live browser preview powered by PDF.js.
 
-## Prerequisites
+The project is designed around a simple principle:
 
-- **Pandoc**: The core document conversion engine.
-  - Ubuntu/Debian/WSL: `sudo apt-get update && sudo apt-get install pandoc`
-  - MacOS: `brew install pandoc`
-  
-- **LibreOffice**: Used for viewing the generated `.odt` files or for headless conversion to PDF.
-  - Ubuntu/Debian/WSL: `sudo apt-get install libreoffice`
-  - Windows: [Download and install LibreOffice natively](https://www.libreoffice.org/download/download-libreoffice/)
-  - MacOS: `brew install --cask libreoffice`
+> **Markdown is the source of truth; document structure and formatting are generated automatically.**
 
-> **Note for Windows/WSL Users**: The recommended workflow is to run the `./build.sh` generation script inside your WSL environment (where Pandoc is installed), and then open the generated `output/report.odt` using the LibreOffice app installed on your host Windows system.
+---
+
+## Features
+
+- Markdown-based document authoring
+- Multiple Markdown files combined into one report
+- Automatic Heading 1 numbering (`1.`, `2.`, ...)
+- Automatic Heading 2 numbering (`1.1`, `1.2`, ...)
+- Automatic Index generation from Heading 1
+- Automatic page breaks
+- Template-based ODT styling
+- Automatic ODT -> PDF conversion
+- Live browser preview
+- Automatic rebuild when Markdown changes
+- WebSocket-based preview updates
+- PDF.js-based PDF rendering
+- Current-page preservation across PDF rebuilds
+- Fully local and offline-capable
+
+---
+
+## Architecture
+
+```text
+Markdown
+   │
+   ▼
+ Pandoc
+   │
+   ├── Lua filters
+   │     ├── Heading numbering
+   │     ├── Index generation
+   │     └── Page breaks
+   │
+   ▼
+ report.odt
+   │
+   ▼
+LibreOffice
+   │
+   ▼
+report.pdf
+   │
+   ▼
+ PDF.js
+   │
+   ▼
+Browser Preview
+````
+
+The live preview adds filesystem watching and WebSockets:
+
+```text
+content/*.md
+     │
+     ▼
+ Chokidar
+     │
+     ▼
+ Build
+     │
+     ├── Pandoc
+     └── LibreOffice
+            │
+            ▼
+       report.pdf
+            │
+            ▼
+      WebSocket event
+            │
+            ▼
+          PDF.js
+```
+
+---
+
+## Requirements
+
+- [Pandoc](https://pandoc.org/)
+- LibreOffice
+- Node.js
+
+Install the Node.js dependencies:
+
+```bash
+npm install
+```
+
+---
 
 ## Project Structure
 
-- **`build.sh`**: The main build script that runs the Pandoc command.
-- **`content/`**: Directory containing the Markdown source files for the report. Files are typically numbered to enforce a specific ordering during concatenation (e.g., `01_introduction.md`).
-- **`assets/`**: Directory for storing static assets like images used in the Markdown files.
-- **`filters/`**: Pandoc Lua filters that automate document structure.
+```text
+.
+├── build.sh
+├── preview-server.js
+├── content/
+├── assets/
+├── filters/
+│   ├── index.lua
+│   ├── number-h1.lua
+│   ├── number-h2.lua
+│   └── pagebreak.lua
+├── viewer/
+│   ├── index.html
+│   └── preview.js
+├── reference.odt
+└── output/
+    ├── report.odt
+    └── report.pdf
+```
 
-  These filters remove the need for manual formatting tasks such as numbering and index creation.
+---
 
-  Includes:
-  - `pagebreak.lua` → converts `\newpage` / `\pagebreak` into real ODT page breaks  
-  - `number-h1.lua` → automatically generates chapter numbering (1, 2, 3...)  
-  - `number-h2.lua` → automatically generates hierarchical section numbering (1.1, 1.2...)  
-  - `index.lua` → generates Index table automatically from Heading 1 structure
-- **`reference.odt`**: The reference OpenDocument template used to style the output report.
-- **`output/`**: The generated report (`report.odt`) will be saved here.
+## Building the Report
 
-## Usage
-
-To generate the report, simply execute the build script:
+Run:
 
 ```bash
 ./build.sh
 ```
 
-This script will:
-1. Create the `output` directory if it doesn't exist.
-2. Concatenate all `.md` files in the `content/` directory.
-3. Apply the `pagebreak.lua` filter.
-4. Style the document using `reference.odt`.
-5. Output the final report to `output/report.odt`.
+This:
 
-This pipeline ensures that document structure is always derived from content, not manually maintained formatting.
+1. Creates `output/` if necessary.
+2. Converts the Markdown files into `report.odt` using Pandoc.
+3. Applies the Lua filters.
+4. Converts the ODT into `report.pdf` using LibreOffice.
 
-## 📘 Writing Guide
-
-All document writing rules are defined in: `syntax-guide.md`
-
-## 🧠 Automated Document Structure
-
-This system eliminates manual document maintenance by deriving structure from Markdown content.
-
-Previously, users had to:
-
-- manually number chapters and sections
-- update numbering after adding/removing content
-- maintain index tables separately from content
-
-Now:
-
-- numbering is generated automatically (`1. `, `2. ` for `Heading 1` and  `1.1 `, `1.2 ` for `Heading 2`)
-- index is derived directly from document structure
-- formatting is handled by template and filters
-- content remains the only source of truth
-
-## 📘 Index Generation
-
-The Index is automatically generated from all Heading 1 elements in the document.
-
-This removes the need to manually maintain:
-
-- chapter ordering
-- serial numbers
-- index table updates after edits
-
-The only manual input required is page numbers (as per academic formatting requirements).
+The build uses `set -e`, so a failed Pandoc or LibreOffice command causes the build to fail.
 
 ---
 
-## ⚙️ Design Tradeoffs
+## Automated Structure
 
-This system is intentionally built around deterministic, local-first document generation using Pandoc and LibreOffice. The design choices below explain why certain tools were selected over more complex or “modern” alternatives.
+### Heading numbering
 
-### 🧩 Why Pandoc instead of a custom renderer
+```markdown
+# Introduction
 
-Pandoc is used as the core conversion engine instead of building a custom Markdown-to-ODT pipeline.
+## Background
 
-**Reasoning:**
-- Pandoc already implements a battle-tested Markdown AST parser
-- Handles edge cases (tables, lists, nested structures) that are easy to get wrong in custom parsers
-- Supports multiple output formats (ODT, DOCX, PDF) without rewriting logic
-- Maintains deterministic conversion behavior across environments
+## Motivation
 
-**Tradeoff:**
-- Less low-level control over final document internals
-- Requires working within Pandoc’s abstraction layer instead of full custom formatting logic
+# Architecture
 
----
-
-### 🧠 Why Lua filters instead of post-processing scripts
-
-All structural transformations (numbering, index generation, page breaks) are implemented as Pandoc Lua filters.
-
-**Reasoning:**
-- Operate directly on Pandoc’s AST (structured, not string-based)
-- Avoid brittle regex-based Markdown parsing
-- Execute during compilation, not after rendering
-- Keep transformation logic declarative and modular
-
-**Tradeoff:**
-- Requires understanding Pandoc AST model
-- Debugging is less intuitive than plain Node.js scripts
-- Limited ecosystem compared to general-purpose scripting
-
----
-
-### 📄 Why ODT instead of DOCX-first
-
-The output format is OpenDocument Text (.odt) instead of directly targeting Microsoft Word formats.
-
-**Reasoning:**
-- LibreOffice provides reliable headless conversion tooling
-- ODT is more stable for template-driven styling in open-source workflows
-- Easier to embed consistent style templates (`reference.odt`)
-- Avoids Microsoft Office-specific formatting inconsistencies
-
-**Tradeoff:**
-- DOCX is more widely used in corporate environments
-- Some styling parity differences may exist when converting ODT -> DOCX later
-
----
-
-### 🔧 Why LibreOffice macro is tolerated (table borders limitation)
-
-Pandoc does not generate reliable table borders in ODT output, so a LibreOffice macro is used as a post-processing step.
-
-**Reasoning:**
-- Ensures consistent table styling without modifying Pandoc internals
-- Keeps Markdown clean and focused on content, not presentation hacks
-- Applies uniform styling after document generation in a controlled environment
-
-**Tradeoff:**
-- Requires macro security configuration on user systems
-- Adds dependency on LibreOffice runtime behavior
-- Breaks full portability if macros are disabled or restricted
-
----
-
-## Template (ODT Styling System)
-
-Your `template.odt` controls all document styling rules.
-
----
-
-### 📄 Heading Styles
-
-- Heading 1 -> 16pt bold  
-- Heading 2 -> 14pt bold  
-- Heading 3 -> 12pt bold  
-
----
-
-### 📄 Paragraph Styles
-
-- Body text -> justified  
-- First paragraph -> justified  
-
----
-
-### 📄 Tables
-
-- Tables are written using Pandoc-compatible Markdown
-- Column alignment and structure are handled by Pandoc + ODT template
-- Table borders should be applied using a LibreOffice macro after generation manually
-
-This avoids manual table formatting inside Markdown files and keeps content focused on data rather than styling.
-
----
-
-### 📄 Figures
-
-- Center alignment is enforced via template paragraph styles  
-- Captions inherit normal paragraph styling  
-
----
-
-## 🧩 LibreOffice Macro Support (Table Borders Automation)
-
-This project optionally uses a LibreOffice macro to automatically apply borders to all tables in the generated `.odt` file.
-
----
-
-## ⚙️ Macro Purpose
-
-Pandoc does not generate table borders in ODT output.
-
-To fix this, a LibreOffice macro is used to:
-
-- Detect all tables in the document  
-- Apply consistent border styling  
-- Ensure uniform report formatting  
-
----
-
-## 📜 Macro Code Location
-
-The macro is stored in:
-```
-reference.odt -> LibreOffice Basic -> Module1
+## Components
 ```
 
-Macro name:
+becomes:
+
+```text
+1. Introduction
+1.1 Background
+1.2 Motivation
+
+2. Architecture
+2.1 Components
 ```
+
+Numbering is generated by Lua filters, so adding, removing, or reordering sections does not require manually updating numbers.
+
+### Index
+
+The Index is generated automatically from Heading 1 elements.
+
+### Page breaks
+
+The `pagebreak.lua` filter converts:
+
+```markdown
+\newpage
+```
+
+and:
+
+```markdown
+\pagebreak
+```
+
+into actual ODT page breaks.
+
+---
+
+## Reference Document
+
+`reference.odt` controls the document's visual styling, including:
+
+- Heading styles
+- Body text
+- Fonts
+- Spacing
+- Tables
+- Captions
+- Page layout
+- Figure alignment
+
+This keeps presentation separate from the Markdown source.
+
+---
+
+## Live Preview
+
+Start the preview server:
+
+```bash
+npm run preview
+```
+
+Then open:
+
+```text
+http://localhost:3000
+```
+
+The server watches `content/` using Chokidar.
+
+When Markdown changes:
+
+```text
+Markdown change
+      ↓
+Chokidar
+      ↓
+Debounced build
+      ↓
+Pandoc + LibreOffice
+      ↓
+Successful build
+      ↓
+WebSocket notification
+      ↓
+PDF.js reload
+```
+
+A successful build is the event that tells the browser that a new PDF is ready.
+
+---
+
+## PDF.js Preview
+
+The preview uses `pdfjs-dist` rather than the browser's built-in PDF viewer.
+
+PDF.js is served directly from `node_modules`, so the preview does not depend on a CDN or external service.
+
+This gives the application control over the viewer state.
+
+Currently, the preview preserves the **current page** when the PDF is rebuilt.
+
+For example:
+
+```text
+User is viewing page 19
+        ↓
+Markdown is edited
+        ↓
+PDF is rebuilt
+        ↓
+New PDF is loaded
+        ↓
+Page 19 is restored
+```
+
+If the document becomes shorter and that page no longer exists, the page number is clamped to the new last page.
+
+The exact horizontal scroll position is not preserved.
+
+---
+
+## Preview PDF vs Final PDF
+
+**Important:** `output/report.pdf` is primarily a **preview PDF**.
+
+The automated build currently does **not** apply the LibreOffice table-border macro.
+
+### Table borders
+
+Pandoc does not reliably produce the required table borders in the ODT output.
+
+The project therefore contains a LibreOffice macro:
+
+```text
 AddBordersToAllTables
 ```
 
----
+stored inside:
 
-## ▶️ How to Run Manually
-
-Inside LibreOffice Writer:
-
-```
-Tools -> Macros -> Run Macro ->
-My Macros -> Standard -> Module1 -> AddBordersToAllTables
+```text
+reference.odt
 ```
 
----
+The macro applies the required borders to all tables.
 
-## 🔐 IMPORTANT: Enable Macros (Security Settings)
+### Final PDF workflow
 
-By default, LibreOffice disables macros for safety.
-You must enable them for this project.
+For the final report:
 
----
-
-## ✔️ Steps
-
-Navigate to:
-
-```
-Tools -> Options -> LibreOffice -> Security -> Macro Security
-```
-
-Set to:
-
-```
-MEDIUM (recommended for local development)
+```text
+Markdown
+   ↓
+build.sh
+   ↓
+report.odt
+   ↓
+Open in LibreOffice
+   ↓
+Run AddBordersToAllTables
+   ↓
+Export as PDF
 ```
 
-OR:
+Therefore:
 
-```
-LOW (not recommended, but enables fully automated execution)
-```
+> **Do not treat `output/report.pdf` as the final submission PDF if table borders are required.**
+
+It is the fast, automatically regenerated preview artifact.
 
 ---
 
-## 🔄 Convert ODT -> DOCX
+## Why PDF.js?
 
-After generating the `.odt` file:
+The browser's built-in PDF viewer provides little control over document state.
 
-```bash
-libreoffice --headless --convert-to docx output/report.odt --outdir output
-```
+PDF.js allows the preview to control:
 
-## 🚀 Design Philosophy
+- PDF loading
+- current page
+- zoom
+- viewer state
+- future navigation UI
+- future document outline/sidebar integration
 
-This system treats Markdown as structured input rather than formatted text.
+The current implementation intentionally uses only the parts needed by the preview rather than adopting the complete PDF.js application UI.
 
-The build pipeline transforms raw content into a fully structured document by:
+---
 
-- deriving numbering from document hierarchy for heading 1 and heading 2
-- generating Index automatically
-- enforcing consistency between sections and references
-- eliminating manual synchronization tasks
+## Design Philosophy
 
-This allows authors to focus entirely on content creation while formatting and structure are handled deterministically during build time.
+The project intentionally avoids unnecessary infrastructure.
+
+It uses:
+
+- local files
+- Pandoc
+- Lua filters
+- LibreOffice
+- Node.js
+- Chokidar
+- WebSockets
+- PDF.js
+
+There is no database, cloud backend, remote rendering service, or AI dependency.
+
+The goal is a small, deterministic document pipeline where:
+
+> **content is authored once, and everything else is generated.**
