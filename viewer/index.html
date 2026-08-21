@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Report Preview</title>
 
   <style>
-    html, body {
+    html,
+    body {
       margin: 0;
       height: 100%;
     }
@@ -16,39 +18,40 @@
     }
   </style>
 </head>
+
 <body>
 
-<iframe
-  id="pdf"
-  src="/output/report.pdf">
-</iframe>
+  <iframe id="pdf" src="/output/report.pdf">
+  </iframe>
 
-<script>
-const iframe = document.getElementById("pdf");
+  <script>
+    const iframe = document.getElementById("pdf");
 
-const protocol =
-  location.protocol === "https:"
-    ? "wss:"
-    : "ws:";
+    const protocol =
+      location.protocol === "https:"
+        ? "wss:"
+        : "ws:";
 
-const ws = new WebSocket(
-  `${protocol}//${location.host}`
-);
+    const ws = new WebSocket(
+      `${protocol}//${location.host}`
+    );
 
-ws.onmessage = (event) => {
-  if (event.data === "reload") {
+    ws.onmessage = (event) => {
+      const message = JSON.parse(event.data);
 
-    console.log("Reloading PDF...");
+      if (message.type === "pdf-updated") {
+        console.log("Reloading PDF...");
 
-    iframe.src =
-      `/output/report.pdf?t=${Date.now()}`;
-  }
-};
+        iframe.src =
+          `/output/report.pdf?t=${Date.now()}`;
+      }
+    };
 
-ws.onclose = () => {
-  console.log("WebSocket disconnected");
-};
-</script>
+    ws.onclose = () => {
+      console.log("WebSocket disconnected");
+    };
+  </script>
 
 </body>
+
 </html>

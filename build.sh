@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 mkdir -p output
 
 pandoc content/*.md \
@@ -8,7 +10,7 @@ pandoc content/*.md \
   --lua-filter=filters/index.lua \
   --lua-filter=filters/number-h1.lua \
   --lua-filter=filters/number-h2.lua \
-  --lua-filter=filters/pagebreak.lua \
+  --lua-filter=filters/pagebreak.lua
 
 echo "Build complete: output/report.odt"
 

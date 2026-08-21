@@ -4,7 +4,6 @@ const WebSocket = require("ws");
 const { exec } = require("child_process");
 
 const PORT = 3000;
-const PDF_PATH = "output/report.pdf";
 
 let buildRunning = false;
 let buildQueued = false;
@@ -28,6 +27,10 @@ function runBuild() {
       console.error("Build failed:", error.message);
     } else {
       console.log("Build completed");
+
+      broadcast(JSON.stringify({
+        type: "pdf-updated",
+      }));
     }
 
     buildRunning = false;
@@ -66,17 +69,6 @@ function broadcast(message) {
   });
 }
 
-let reloadTimer = null;
-
-function scheduleReload() {
-  clearTimeout(reloadTimer);
-
-  reloadTimer = setTimeout(() => {
-    console.log("PDF updated → notifying clients");
-    broadcast("reload");
-  }, 1000);
-}
-
 chokidar
   .watch("content", {
     ignoreInitial: true,
@@ -88,19 +80,6 @@ chokidar
   .on("all", (event, path) => {
     console.log(`[MD ${event}] ${path}`);
     scheduleBuild();
-  });
-
-chokidar
-  .watch(PDF_PATH, {
-    ignoreInitial: true,
-    awaitWriteFinish: {
-      stabilityThreshold: 1000,
-      pollInterval: 100,
-    },
-  })
-  .on("all", (event, path) => {
-    console.log(`[${event}] ${path}`);
-    scheduleReload();
   });
 
 wss.on("connection", () => {
