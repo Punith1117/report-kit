@@ -20,7 +20,13 @@ const pdfViewer = new pdfjsViewer.PDFViewer({
 
 pdfLinkService.setViewer(pdfViewer);
 
-async function loadPdf() {
+let currentPage = 1;
+
+eventBus.on("updateviewarea", (event) => {
+  currentPage = event.location.pageNumber;
+});
+
+async function loadPdf(pageToRestore = 1) {
   console.log("Loading PDF...");
 
   const loadingTask = pdfjsLib.getDocument({
@@ -44,7 +50,10 @@ async function loadPdf() {
     }
   });
 
-  pdfViewer.currentScaleValue = "page-width";
+  pdfViewer.currentPageNumber = Math.min(
+    pageToRestore,
+    pdfDocument.numPages
+  );
 
   console.log(`PDF loaded: ${pdfDocument.numPages} pages`);
 }
@@ -66,14 +75,15 @@ ws.onmessage = async (event) => {
   if (message.type === "pdf-updated") {
     console.log("PDF updated → reloading");
 
+    const pageToRestore = currentPage;
+
     try {
-      await loadPdf();
+      await loadPdf(pageToRestore);
     } catch (error) {
       console.error("Failed to reload PDF:", error);
     }
   }
 };
-
 ws.onclose = () => {
   console.log("WebSocket disconnected");
 };
