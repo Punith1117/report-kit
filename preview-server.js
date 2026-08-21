@@ -53,6 +53,32 @@ function scheduleBuild() {
 const app = express();
 
 app.use("/output", express.static("output"));
+
+app.use(
+  "/pdfjs/build",
+  express.static("node_modules/pdfjs-dist/build")
+);
+
+app.use(
+  "/pdfjs/web",
+  express.static("node_modules/pdfjs-dist/web")
+);
+
+app.use(
+  "/pdfjs/cmaps",
+  express.static("node_modules/pdfjs-dist/cmaps")
+);
+
+app.use(
+  "/pdfjs/standard_fonts",
+  express.static("node_modules/pdfjs-dist/standard_fonts")
+);
+
+app.use(
+  "/pdfjs/wasm",
+  express.static("node_modules/pdfjs-dist/wasm")
+);
+
 app.use("/", express.static("viewer"));
 
 const server = app.listen(PORT, () => {
