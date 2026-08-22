@@ -24,6 +24,8 @@ The system continuously accepts temperature data as input from the DHT22 sensor.
 
 ## Hardware Requirements
 
+Table: Hardware Centre Test Requirements
+
 -------- -------------------------- -----------------------------------------------------
  Sl. No   Hardware Component         Purpose
 -------- -------------------------- -----------------------------------------------------
@@ -41,8 +43,6 @@ The system continuously accepts temperature data as input from the DHT22 sensor.
  
  7        Power Supply               Provides electrical power to the system
 -------- -------------------------- -----------------------------------------------------
-
-Table 3.1: Hardware Requirements
 
 The ESP32 microcontroller acts as the main controller of the system. The DHT22 sensor continuously senses the temperature and sends the measured values to the ESP32. The buzzer acts as an output device and produces an alert sound whenever the temperature crosses the threshold limit.
 
