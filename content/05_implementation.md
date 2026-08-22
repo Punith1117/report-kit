@@ -28,7 +28,7 @@ The hardware implementation involves interfacing the DHT22 sensor and buzzer wit
  Buzzer Negative   GND
 ----------------- ----------------------
 
-Table 5.1: Hardware Connections
+Table: Hardware Connections
 
 The DHT22 sensor sends temperature readings to the ESP32 through GPIO4 pin. The ESP32 processes the temperature values and activates the buzzer connected to GPIO18 whenever the threshold condition is satisfied.
 

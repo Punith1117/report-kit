@@ -24,7 +24,7 @@ The following observations were recorded during the testing of the system:
  4        Sensor disconnected              OFF            Error message displayed
 -------- -------------------------------- --------------- -------------------------
 
-Table 6.1: Result Observations
+Table: Result Observations
 
 The obtained results indicate that the proposed system performs reliable temperature monitoring and alert generation. The ESP32 controller successfully processed the temperature data from the DHT22 sensor and activated the buzzer whenever the threshold condition was satisfied.
 

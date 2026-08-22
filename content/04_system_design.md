@@ -38,7 +38,7 @@ Figure 4.1 shows the overall system architecture of the Temperature Monitoring a
  ESP32       WiFi                802.11 b/g/n
 ----------- ------------------- ------------------
 
-Table 4.1: Component Specifications
+Table: Component Specifications
 
 The architecture diagram clearly shows the flow of data from the DHT22 sensor to the ESP32 microcontroller. The ESP32 processes the input data and controls the buzzer output based on the temperature threshold condition. The Serial Monitor displays the real-time temperature values continuously.
 

@@ -64,7 +64,7 @@ The ESP32 microcontroller acts as the main controller of the system. The DHT22 s
  5        Serial Monitor        Displays real-time temperature readings
 -------- --------------------- -------------------------------------------
 
-Table 3.2: Software Requirements
+Table: Software table Requirements
 
 Arduino IDE is used for developing and uploading the program code to the ESP32 microcontroller. Embedded C language is used for implementing the control logic of the system. The DHT sensor library allows the ESP32 to communicate with the DHT22 sensor and read temperature values efficiently.
 
