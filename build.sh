@@ -11,6 +11,7 @@ pandoc content/*.md \
   --lua-filter=filters/number-h1.lua \
   --lua-filter=filters/number-h2.lua \
   --lua-filter=filters/number-tables.lua \
+  --lua-filter=filters/number-images.lua \
   --lua-filter=filters/pagebreak.lua \
   --table-caption-position=below
 

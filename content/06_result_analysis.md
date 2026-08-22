@@ -55,13 +55,13 @@ The following snapshots were captured during the implementation and testing of t
 - Buzzer activation during high temperature condition
 - Arduino IDE program upload screen
 
-![Figure 6.1: Hardware Setup of Proposed System](assets/images/result.png){width=5in height=3.5in}
+![Hardware Setup of Proposed System](assets/images/result.png){width=5in height=3.5in}
 
-![Figure 6.2: Circuit Connection of ESP32 and DHT22](assets/images/result.png){width=5in height=3.5in}
+![Circuit Connection of ESP32 and DHT22](assets/images/result.png){width=5in height=3.5in}
 
-![Figure 6.3: Serial Monitor Output](assets/images/result.png){width=5in height=3.5in}
+![Serial Monitor Output](assets/images/result.png){width=5in height=3.5in}
 
-![Figure 6.4: Buzzer Alert during High Temperature Detection](assets/images/result.png){width=5in height=3.5in}
+![Buzzer Alert during High Temperature Detection](assets/images/result.png){width=5in height=3.5in}
 
 ---
 
