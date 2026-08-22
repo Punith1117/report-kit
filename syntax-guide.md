@@ -3,8 +3,9 @@
 This project uses Pandoc-compatible Markdown only.
 
 ### 1. Headings (Template-driven)
+
 ```
-# Heading 1	
+# Heading 1 
 ## Heading 2
 ### Heading 3
 and so on..
@@ -26,16 +27,16 @@ Use: `&nbsp` for space and `&emsp` for tab space.
 Use: `\` for Enter.
 
 ### 4. Images (Centered with Caption)
+
 Correct syntax:
-`![Figure 4.1: System Architecture](assets/images/architecture.png){width=5in height=3.5in}`
+`![System Architecture](assets/images/architecture.png){width=5in height=3.5in}`
 
-Requirements:
-
+Points to remember:
 - Must be alone in paragraph
-- Caption is auto-derived from alt text
+- Caption is auto-derived and auto-numbered from alt text
 - Centering is handled by template styling
 
-### 5. Tables (IMPORTANT RULE)
+### 5. Tables
 
 Recommended table format:
 
@@ -55,7 +56,15 @@ Recommended table format:
 -------- --------------------- -------------------------------------------
 ```
 
-> **IMPORTANT NOTE** : Table borders are NOT automatically applied by Pandoc or ODT templates. Borders can be added by running the Macro embedded into the template.
+The caption is written separately:
+
+```
+Table: Software Requirements
+```
+
+Points to remember:
+- Table captions are automatically numbered.
+- Table borders are NOT automatically applied by Pandoc or ODT templates. Borders can be added by running the Macro embedded into the template.
 
 ### 6. Column Width of Table Behavior
 
