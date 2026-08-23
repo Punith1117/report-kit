@@ -321,6 +321,8 @@ reference.odt
 
 The resulting `output/report.pdf` therefore already includes the table borders.
 
+> **Note:** LibreOffice Macro Security must be set to **Low** for the automated macro execution to work.
+
 ---
 
 ## Why PDF.js?
