@@ -1,5 +1,10 @@
 # Markdown Report Generator
 
+Copyright (C) 2026 Punith
+
+This project is licensed under the GNU General Public License v3.0.
+See the [LICENSE](LICENSE) file for details.
+
 A local-first document generation system that converts Markdown into styled ODT and PDF documents, with a live browser preview.
 
 > **Markdown defines the document content and structure; reference templates define its visual formatting.**
