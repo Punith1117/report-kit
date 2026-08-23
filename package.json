@@ -7,6 +7,7 @@
     "build": "./scripts/build.sh",
     "preview-build": "./scripts/preview_build.sh",
     "preview": "node preview-server.js",
+    "combine": "node combine_pdfs.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -16,6 +17,7 @@
   "dependencies": {
     "chokidar": "^5.0.0",
     "express": "^5.2.1",
+    "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^6.2.108",
     "ws": "^8.21.0"
   }
