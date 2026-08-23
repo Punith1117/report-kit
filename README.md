@@ -139,7 +139,8 @@ This:
 1. Creates `output/` if necessary.
 2. Converts the Markdown files into `report.odt` using Pandoc.
 3. Applies the Lua filters.
-4. Converts the ODT into `report.pdf` using LibreOffice.
+4. Automatically runs the LibreOffice `AddBordersToAllTables` macro.
+5. Converts the processed ODT into `report.pdf` using LibreOffice.
 
 The build uses `set -e`, so a failed Pandoc or LibreOffice command causes the build to fail.
 
@@ -294,53 +295,31 @@ The exact horizontal scroll position is not preserved.
 
 ---
 
-## Preview PDF vs Final PDF
-
-**Important:** `output/report.pdf` is primarily a **preview PDF**.
-
-The automated build currently does **not** apply the LibreOffice table-border macro.
-
 ### Table borders
 
 Pandoc does not reliably produce the required table borders in the ODT output.
 
-The project therefore contains a LibreOffice macro:
+The build therefore automatically runs the LibreOffice macro:
 
 ```text
 AddBordersToAllTables
 ```
 
-stored inside:
+The macro applies borders to all tables in the generated document, saves the changes, and closes the document. No manual LibreOffice processing is required.
+
+The macro source is documented in:
+
+```text
+documentation/AddBordersToAllTables.md
+```
+
+The executable copy is stored inside:
 
 ```text
 reference.odt
 ```
 
-The macro applies the required borders to all tables.
-
-### Final PDF workflow
-
-For the final report:
-
-```text
-Markdown
-   ↓
-build.sh
-   ↓
-report.odt
-   ↓
-Open in LibreOffice
-   ↓
-Run AddBordersToAllTables
-   ↓
-Export as PDF
-```
-
-Therefore:
-
-> **Do not treat `output/report.pdf` as the final submission PDF if table borders are required.**
-
-It is the fast, automatically regenerated preview artifact.
+The resulting `output/report.pdf` therefore already includes the table borders.
 
 ---
 

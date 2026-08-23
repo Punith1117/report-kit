@@ -1,9 +1,9 @@
 #!/bin/bash
-
 set -e
 
 mkdir -p output
 
+# 1. Standard Pandoc assembly
 pandoc content/*.md \
   -o output/report.odt \
   --reference-doc=reference.odt \
@@ -17,6 +17,14 @@ pandoc content/*.md \
 
 echo "Build complete: output/report.odt"
 
+# 2. Automated Macro Processing using official URI schema syntax
+soffice --headless --norestore \
+  "output/report.odt" \
+  "macro://./Standard.Module1.AddBordersToAllTables"
+
+echo "Macro completed successfully: Tables formatted"
+
+# 3. Compile final PDF preview artifact
 soffice \
   --headless \
   --convert-to pdf \
