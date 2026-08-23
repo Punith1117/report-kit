@@ -30,7 +30,7 @@ async function loadPdf(pageToRestore = 1) {
   console.log("Loading PDF...");
 
   const loadingTask = pdfjsLib.getDocument({
-    url: `/output/report.pdf?t=${Date.now()}`,
+    url: `/output/pdf/content.pdf?t=${Date.now()}`,
     cMapUrl: "/pdfjs/cmaps/",
     cMapPacked: true,
     standardFontDataUrl: "/pdfjs/standard_fonts/",

@@ -17,16 +17,16 @@ function runBuild() {
 
   buildRunning = true;
 
-  console.log("Running build...");
+  console.log("Running preview build...");
 
-  exec("npm run build", (error, stdout, stderr) => {
+  exec("npm run preview-build", (error, stdout, stderr) => {
     if (stdout) process.stdout.write(stdout);
     if (stderr) process.stderr.write(stderr);
 
     if (error) {
-      console.error("Build failed:", error.message);
+      console.error("Preview Build failed:", error.message);
     } else {
-      console.log("Build completed");
+      console.log("Preview Build completed");
 
       broadcast(JSON.stringify({
         type: "pdf-updated",
