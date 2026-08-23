@@ -47,7 +47,7 @@ function scheduleBuild() {
 
   buildTimer = setTimeout(() => {
     runBuild();
-  }, 1000);
+  }, 200);
 }
 
 const app = express();
@@ -99,8 +99,8 @@ chokidar
   .watch("content", {
     ignoreInitial: true,
     awaitWriteFinish: {
-      stabilityThreshold: 500,
-      pollInterval: 100,
+      stabilityThreshold: 300,
+      pollInterval: 50,
     },
   })
   .on("all", (event, path) => {
