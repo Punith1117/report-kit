@@ -39,19 +39,28 @@ npm install
 
 ```text
 .
-├── content/
 ├── assets/
-├── filters/
-├── scripts/
+├── content/
 ├── documentation/
+├── filters/
+├── output/
+│   ├── odt/
+│   │   ├── 02_index.odt
+│   │   └── 03_content.odt
+│   ├── pdf/
+│   │   ├── 01_cover.pdf
+│   │   ├── 02_index.pdf
+│   │   └── 03_content.pdf
+│   └── final_report.pdf
 ├── reference/
 │   ├── content-reference.odt
 │   └── index-reference.odt
-├── output/
-│   ├── odt/
-│   └── pdf/
+├── scripts/
+│   ├── build.sh
+│   └── preview_build.sh
 ├── viewer/
-├── build.sh
+├── combine_pdfs.js
+├── index.md
 ├── preview-server.js
 └── package.json
 ```
@@ -71,18 +80,53 @@ This generates:
 ```text
 output/
 ├── odt/
-│   ├── index.odt
-│   └── content.odt
+│   ├── 02_index.odt
+│   └── 03_content.odt
 └── pdf/
-    ├── index.pdf
-    └── content.pdf
+    ├── 02_index.pdf
+    └── 03_content.pdf
 ```
 
-The index and content are generated separately so that the Index can be edited or combined with externally provided front matter before final submission.
+The Index and report content are generated separately so they can be combined with externally provided PDFs, such as a cover page, in a controlled order.
 
 Both ODT files are automatically processed with the `AddBordersToAllTables` LibreOffice macro before PDF generation.
 
 > **Note:** LibreOffice Macro Security must be set to **Low** for automated macro execution.
+
+---
+
+## Combining PDFs
+
+The final submission PDF is assembled from the files in:
+
+```text
+output/pdf/
+```
+
+Files are combined in alphabetical filename order.
+
+The default generated files are:
+
+02_index.pdf
+03_content.pdf
+
+Additional PDFs can be added using numeric prefixes. For example:
+
+01_cover.pdf
+02_index.pdf
+03_content.pdf
+
+Run:
+
+```
+npm run combine
+```
+
+This generates:
+
+output/final_report.pdf
+
+The PDF combination is performed locally using `pdf-lib`.
 
 ---
 
@@ -153,4 +197,3 @@ The project deliberately uses a small local toolchain:
 **Markdown → Pandoc/Lua → ODT → LibreOffice → PDF**
 
 No database, cloud backend, AI service, or remote rendering infrastructure is required.
-
