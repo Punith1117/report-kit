@@ -111,3 +111,6 @@ chokidar
 wss.on("connection", () => {
   console.log("Browser connected");
 });
+
+// Generate a fresh preview when the server starts.
+runBuild();
