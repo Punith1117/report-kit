@@ -26,17 +26,9 @@ A local-first document generation system that converts Markdown into styled ODT 
 
 ---
 
-## Requirements
+## Installation
 
-- [Pandoc](https://pandoc.org/)
-- LibreOffice
-- Node.js
-
-Install Node.js dependencies:
-
-```bash
-npm install
-````
+See [Installation](documentation/installation.md) for platform-specific setup instructions.
 
 ---
 
@@ -159,12 +151,12 @@ The preview intentionally skips Index generation to keep rebuilds fast.
 
 The reference ODT files control document styling such as:
 
-* Fonts
-* Headings
-* Paragraph formatting
-* Tables
-* Captions
-* Page layout
+- Fonts
+- Headings
+- Paragraph formatting
+- Tables
+- Captions
+- Page layout
 
 The two templates are:
 
@@ -185,13 +177,9 @@ documentation/AddBordersToAllTables.md
 
 ## Documentation
 
-Additional project conventions and implementation details are documented in:
-
-```text
-documentation/
-├── AddBordersToAllTables.md
-└── syntax-guide.md
-```
+- [Installation](documentation/installation.md) — setup instructions for Linux and Windows
+- [Syntax Guide](documentation/syntax-guide.md) — Markdown conventions and supported report syntax
+- [AddBordersToAllTables](documentation/AddBordersToAllTables.md) — implementation details of the automated table-border macro
 
 ---
 
