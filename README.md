@@ -141,7 +141,13 @@ Then open:
 http://localhost:3000
 ```
 
-The preview watches `content/` for changes and automatically rebuilds the content PDF.
+The preview automatically rebuilds the content PDF when any of its dependencies change:
+
+- content/
+- assets/
+- filters/
+- scripts/preview_build.js
+- reference/content-reference.odt
 
 The preview intentionally skips Index generation to keep rebuilds fast.
 
