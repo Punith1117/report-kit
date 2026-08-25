@@ -30,6 +30,12 @@ See [Installation](documentation/installation.md) for platform-specific setup in
 
 ---
 
+## Usage
+
+See [Usage](documentation/usage.md) for instructions on editing, building, previewing, customizing templates, and generating the final report.
+
+---
+
 ## Project Structure
 
 ```text
