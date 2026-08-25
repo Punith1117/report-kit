@@ -27,6 +27,53 @@
       inset: 0;
       overflow: auto;
     }
+
+    #pageNavigation {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      padding: 3px 6px;
+
+      background: rgba(35, 35, 35, 0.92);
+      color: #fff;
+
+      border-radius: 6px;
+
+      font-family: sans-serif;
+      font-size: 16px;
+
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    }
+
+    #pageInput {
+      width: 22px;
+
+      padding: 1px 2px;
+
+      color: #fff;
+      background: transparent;
+
+      border: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.45);
+      outline: none;
+
+      text-align: right;
+      font: inherit;
+    }
+
+    #pageInput:focus {
+      border-bottom-color: #fff;
+    }
+
+    #pageTotal {
+      white-space: nowrap;
+      color: rgba(255, 255, 255, 0.75);
+    }
   </style>
 </head>
 
@@ -34,6 +81,12 @@
 
   <div id="viewerContainer">
     <div id="viewer" class="pdfViewer"></div>
+  </div>
+
+  <div id="pageNavigation">
+    <input id="pageInput" type="text" inputmode="numeric" value="1" aria-label="Current page">
+
+    <span id="pageTotal">/ 0</span>
   </div>
 
   <script type="module" src="/preview.js">

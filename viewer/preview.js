@@ -1,5 +1,6 @@
 import * as pdfjsLib from "/pdfjs/build/pdf.mjs";
 import * as pdfjsViewer from "/pdfjs/web/pdf_viewer.mjs";
+import { createPageNavigation } from "/navigation.js";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   "/pdfjs/build/pdf.worker.mjs";
@@ -22,8 +23,16 @@ pdfLinkService.setViewer(pdfViewer);
 
 let currentPage = 1;
 
+const navigation = createPageNavigation({
+  onNavigate(page) {
+    pdfViewer.currentPageNumber = page;
+  },
+});
+
 eventBus.on("updateviewarea", (event) => {
   currentPage = event.location.pageNumber;
+
+  navigation.setPage(currentPage);
 });
 
 async function loadPdf(pageToRestore = 1) {
@@ -42,6 +51,8 @@ async function loadPdf(pageToRestore = 1) {
   pdfViewer.setDocument(pdfDocument);
   pdfLinkService.setDocument(pdfDocument, null);
 
+  navigation.setTotalPages(pdfDocument.numPages);
+
   await new Promise((resolve) => {
     if (pdfViewer.pagesCount > 0) {
       resolve();
@@ -50,10 +61,15 @@ async function loadPdf(pageToRestore = 1) {
     }
   });
 
-  pdfViewer.currentPageNumber = Math.min(
-    pageToRestore,
-    pdfDocument.numPages
+  const page = Math.max(
+    1,
+    Math.min(pageToRestore, pdfDocument.numPages)
   );
+
+  pdfViewer.currentPageNumber = page;
+  currentPage = page;
+
+  navigation.setPage(page);
 
   console.log(`PDF loaded: ${pdfDocument.numPages} pages`);
 }
@@ -84,6 +100,7 @@ ws.onmessage = async (event) => {
     }
   }
 };
+
 ws.onclose = () => {
   console.log("WebSocket disconnected");
 };
