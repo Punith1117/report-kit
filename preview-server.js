@@ -96,7 +96,13 @@ function broadcast(message) {
 }
 
 chokidar
-  .watch("content", {
+  .watch([
+    "content",
+    "assets",
+    "filters",
+    "scripts/preview_build.js",
+    "reference/content-reference.odt",
+  ], {
     ignoreInitial: true,
     awaitWriteFinish: {
       stabilityThreshold: 300,
@@ -104,7 +110,7 @@ chokidar
     },
   })
   .on("all", (event, path) => {
-    console.log(`[MD ${event}] ${path}`);
+    console.log(`[WATCH ${event}] ${path}`);
     scheduleBuild();
   });
 
