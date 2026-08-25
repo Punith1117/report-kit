@@ -1,13 +1,12 @@
-# Markdown Report Generator
+# Report Kit
 
-Copyright (C) 2026 Punith
+A local-first report automation toolkit that turns Markdown into polished, repeatable documents.
 
-This project is licensed under the GNU General Public License v3.0.
-See the [LICENSE](LICENSE) file for details.
+Write your report in the code editor you already use. Split large reports into manageable Markdown files, keep your formatting rules in reusable templates, and let Report Kit handle the repetitive work — numbering headings, figures, and tables, applying consistent styling, generating the Index, converting to editable Word-compatible documents and PDFs, and rebuilding a live browser preview.
 
-A local-first document generation system that converts Markdown into styled ODT and PDF documents, with a live browser preview.
+No formatting by hand. No cloud service. No special writing application. 
 
-> **Markdown defines the document content and structure; reference templates define its visual formatting.**
+*Keep content and design separate. Automate the repetitive work. Produce consistent reports every time.*
 
 ---
 
@@ -17,11 +16,10 @@ A local-first document generation system that converts Markdown into styled ODT 
 - Multiple Markdown files combined into a report
 - Automatic heading, figure, and table numbering
 - Automatic Index generation
-- Automatic page breaks
 - Template-based ODT styling
-- Automatic table borders
 - ODT → PDF conversion
 - Live PDF preview with automatic rebuilds
+- Combine PDFs to get a final report
 - Fully local and offline-capable
 
 ---
@@ -196,3 +194,10 @@ The project deliberately uses a small local toolchain:
 **Markdown → Pandoc/Lua → ODT → LibreOffice → PDF**
 
 No database, cloud backend, AI service, or remote rendering infrastructure is required.
+
+---
+
+Copyright (C) 2026 Punith
+
+This project is licensed under the GNU General Public License v3.0.
+See the [LICENSE](LICENSE) file for details.
