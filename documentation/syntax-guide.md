@@ -11,6 +11,8 @@ This project uses Pandoc-compatible Markdown only.
 and so on..
 ```
 
+- h1, h2 and h3 are auto-numbered through lua filters.
+
 ### 2. Paragraph Styling (Template controlled)
 
 Template enforces:

@@ -22,7 +22,7 @@ Figure 4.1 shows the overall system architecture of the Temperature Monitoring a
 
 ---
 
-### 4.1.1 Component Specifications
+### Component Specifications
 
 ----------- ------------------- ------------------
  Component   Parameter           Specification

@@ -35,6 +35,7 @@ async function main() {
     "--reference-doc=reference/content-reference.odt",
     "--lua-filter=filters/number-h1.lua",
     "--lua-filter=filters/number-h2.lua",
+    "--lua-filter=filters/number-h3.lua",
     "--lua-filter=filters/number-tables.lua",
     "--lua-filter=filters/number-images.lua",
     "--lua-filter=filters/pagebreak.lua",
