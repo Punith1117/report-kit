@@ -43,7 +43,7 @@ $dependencies = @(
 )
 
 # ----------------------------------------
-# Function: Refresh PATH
+# Functions: PATH management
 # ----------------------------------------
 
 function Refresh-Path {
@@ -51,6 +51,70 @@ function Refresh-Path {
     $userPath    = [Environment]::GetEnvironmentVariable("Path", "User")
 
     $env:Path = "$machinePath;$userPath"
+}
+
+function Add-To-PathIfMissing {
+    param (
+        [string]$PathToAdd
+    )
+
+    $machinePath = [Environment]::GetEnvironmentVariable("Path", "Machine")
+    $userPath    = [Environment]::GetEnvironmentVariable("Path", "User")
+
+    $allPaths = @(
+        $machinePath -split ';'
+        $userPath -split ';'
+    ) | Where-Object { $_ -and $_.Trim() }
+
+    # Case-insensitive comparison because Windows paths are case-insensitive.
+    $exists = $allPaths | Where-Object {
+        $_.TrimEnd('\') -ieq $PathToAdd.TrimEnd('\')
+    }
+
+    if ($exists) {
+        Write-Host "  [OK] LibreOffice is already in PATH." -ForegroundColor Green
+
+        # Refresh current PowerShell PATH even if the entry already exists.
+        Refresh-Path
+        return
+    }
+
+    # Add to User PATH so administrator privileges aren't required.
+    $newUserPath = @(
+        $userPath -split ';'
+        $PathToAdd
+    ) | Where-Object { $_ -and $_.Trim() } | Select-Object -Unique
+
+    [Environment]::SetEnvironmentVariable(
+        "Path",
+        ($newUserPath -join ';'),
+        "User"
+    )
+
+    Write-Host "  [PATH] Added LibreOffice to User PATH." -ForegroundColor Green
+
+    # Make the change available immediately in this PowerShell process.
+    Refresh-Path
+}
+
+function Ensure-LibreOfficePath {
+    $possiblePaths = @(
+        "$env:ProgramFiles\LibreOffice\program"
+        "${env:ProgramFiles(x86)}\LibreOffice\program"
+        "$env:LOCALAPPDATA\Programs\LibreOffice\program"
+    )
+
+    $libreOfficePath = $possiblePaths |
+        Where-Object { Test-Path (Join-Path $_ "soffice.exe") } |
+        Select-Object -First 1
+
+    if (-not $libreOfficePath) {
+        return $false
+    }
+
+    Add-To-PathIfMissing $libreOfficePath
+
+    return [bool](Get-Command soffice -ErrorAction SilentlyContinue)
 }
 
 # ----------------------------------------
@@ -64,6 +128,15 @@ foreach ($dependency in $dependencies) {
     $packageId = $dependency.PackageId
 
     Write-Host "Checking $name..." -ForegroundColor Cyan
+
+    # LibreOffice special handling:
+    # If soffice is not in PATH but LibreOffice is installed,
+    # add its program directory to PATH.
+    if ($name -eq "LibreOffice") {
+        if (-not (Get-Command soffice -ErrorAction SilentlyContinue)) {
+            Ensure-LibreOfficePath
+        }
+    }
 
     if (Get-Command $command -ErrorAction SilentlyContinue) {
 
@@ -104,9 +177,18 @@ foreach ($dependency in $dependencies) {
     Write-Host "  [INSTALLED] $name" -ForegroundColor Green
     Write-Host ""
 
-    # Refresh PATH so newly installed executables
-    # can be detected by this same PowerShell process.
-    Refresh-Path
+    # LibreOffice may not automatically be in PATH.
+    if ($name -eq "LibreOffice") {
+        if (-not (Ensure-LibreOfficePath)) {
+            Write-Host "ERROR: LibreOffice was installed, but soffice.exe could not be found or added to PATH." -ForegroundColor Red
+            exit 1
+        }
+    }
+    else {
+        # Refresh PATH so newly installed executables
+        # can be detected by this same PowerShell process.
+        Refresh-Path
+    }
 }
 
 # ----------------------------------------
