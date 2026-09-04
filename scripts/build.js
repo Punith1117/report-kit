@@ -25,27 +25,7 @@ async function main() {
     .sort()
     .map((file) => join("content", file));
 
-  // 1. Generate index ODT
-  await run("pandoc", [
-    ...files,
-    "-o", "output/odt/02_index.odt",
-    "--reference-doc=reference/index-reference.odt",
-    "--lua-filter=filters/index.lua",
-  ]);
-
-  console.log("Generated: output/odt/02_index.odt");
-
-  // 2. Apply table borders to index
-  await run("soffice", [
-    "--headless",
-    "--norestore",
-    "output/odt/02_index.odt",
-    "macro://./Standard.Module1.AddBordersToAllTables",
-  ]);
-
-  console.log("Index macro completed: Tables formatted");
-
-  // 3. Generate content ODT
+  // 1. Generate content ODT
   await run("pandoc", [
     ...files,
     "-o", "output/odt/03_content.odt",
@@ -61,7 +41,7 @@ async function main() {
 
   console.log("Generated: output/odt/03_content.odt");
 
-  // 4. Apply table borders to content
+  // 2. Apply table borders to content
   await run("soffice", [
     "--headless",
     "--norestore",
@@ -71,17 +51,7 @@ async function main() {
 
   console.log("Content macro completed: Tables formatted");
 
-  // 5. Convert index ODT to PDF
-  await run("soffice", [
-    "--headless",
-    "--convert-to", "pdf",
-    "output/odt/02_index.odt",
-    "--outdir", "output/pdf",
-  ]);
-
-  console.log("Generated: output/pdf/02_index.pdf");
-
-  // 6. Convert content ODT to PDF
+  // 3. Convert content ODT to PDF
   await run("soffice", [
     "--headless",
     "--convert-to", "pdf",
@@ -90,6 +60,42 @@ async function main() {
   ]);
 
   console.log("Generated: output/pdf/03_content.pdf");
+
+  // 4. Generate index.md from content PDF
+  await run("node", [
+    "scripts/extract-index.js",
+  ]);
+
+  console.log("Generated: index.md");
+
+  // 5. Generate index ODT
+  await run("pandoc", [
+    "output/md/index.md",
+    "-o", "output/odt/02_index.odt",
+    "--reference-doc=reference/index-reference.odt",
+  ]);
+
+  console.log("Generated: output/odt/02_index.odt");
+
+  // 6. Apply table borders to index
+  await run("soffice", [
+    "--headless",
+    "--norestore",
+    "output/odt/02_index.odt",
+    "macro://./Standard.Module1.AddBordersToAllTables",
+  ]);
+
+  console.log("Index macro completed: Tables formatted");
+
+  // 7. Convert index ODT to PDF
+  await run("soffice", [
+    "--headless",
+    "--convert-to", "pdf",
+    "output/odt/02_index.odt",
+    "--outdir", "output/pdf",
+  ]);
+
+  console.log("Generated: output/pdf/02_index.pdf");
 }
 
 main().catch((error) => {
