@@ -34,6 +34,8 @@ npm run build
 
 This generates the Index and report content as editable ODT documents and PDFs in `output/`.
 
+The Index includes heading 2 entries and their page numbers by default. This can be configured in scripts/extract-index.js.
+
 ## Combine PDFs
 
 Additional PDFs, such as a cover page, can be placed in `output/pdf/` and given numeric filename prefixes to control their order.
@@ -58,6 +60,8 @@ This produces:
 ```text
 output/final_report.pdf
 ```
+
+The PDF combiner can automatically insert blank pages when configured sections need to start on a right-hand page. This behavior can be customized in `combine_pdfs.js`.
 
 ## Customize Formatting
 
