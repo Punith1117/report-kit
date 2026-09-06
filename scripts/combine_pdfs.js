@@ -8,8 +8,10 @@ const { PDFDocument } = require("pdf-lib");
  * --------------------------------------------------
  */
 
-const inputDir = path.join(__dirname, "output", "pdf");
-const outputFile = path.join(__dirname, "output", "final_report.pdf");
+const projectRoot = path.join(__dirname, "..");
+
+const inputDir = path.join(projectRoot, "output", "pdf");
+const outputFile = path.join(projectRoot, "output", "final_report.pdf");
 
 /*
  * --------------------------------------------------

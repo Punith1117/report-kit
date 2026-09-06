@@ -1,13 +1,12 @@
 {
   "name": "report-generator",
   "version": "1.0.0",
-  "description": "A simple document generation setup that uses [Pandoc](https://pandoc.org/) to convert Markdown files into a styled OpenDocument Text (.odt) report.",
-  "main": "index.js",
+  "description": "A local-first report automation toolkit that turns Markdown into polished, repeatable documents.",
   "scripts": {
     "build": "node scripts/build.js",
     "preview-build": "node scripts/preview_build.js",
     "preview": "node preview-server.js",
-    "combine": "node combine_pdfs.js",
+    "combine": "node scripts/combine_pdfs.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
