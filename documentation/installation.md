@@ -72,4 +72,4 @@ If you need help changing this setting, see [How to enable macro security settin
 
 ---
 
-Now, you can use the software by following the [Usage Guide](documentation/usage.md).
+Now, you can use the software by following the [Usage Guide](usage.md).
