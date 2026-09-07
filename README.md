@@ -92,7 +92,7 @@ The Index and report content are generated separately so they can be combined wi
 
 Both ODT files are automatically processed with the `AddBordersToAllTables` LibreOffice macro before PDF generation.
 
-> **Note:** LibreOffice Macro Security must be set to **Low** for automated macro execution.
+> **Note:** Add the project directory to LibreOffice's **Trusted Sources** in the Macro Security settings so that the automated macro can run. See [Issue #1](https://github.com/Punith1117/report-kit/issues/1) for a demonstration.
 
 ---
 
