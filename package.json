@@ -13,7 +13,7 @@
   "keywords": [],
   "author": "",
   "license": "GPL-3.0-or-later",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
     "chokidar": "^5.0.0",
     "express": "^5.2.1",

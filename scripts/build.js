@@ -1,7 +1,7 @@
-const { mkdir, readdir } = require("node:fs/promises");
-const { join } = require("node:path");
-const { execFile } = require("node:child_process");
-const { promisify } = require("node:util");
+import { mkdir, readdir } from "node:fs/promises";
+import { join } from "node:path";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 
 const execFileAsync = promisify(execFile);
 
