@@ -66,9 +66,9 @@ If the LibreOffice installation through `winget` is too slow, you can install Li
 
 The report build uses a LibreOffice macro to automatically apply table borders.
 
-Configure LibreOffice's macro security to allow the macro to execute automatically by setting it to `low`.
+Add the project directory to LibreOffice's **Trusted Sources** in the Macro Security settings so that the macro can execute automatically.
 
-If you need help changing this setting, see [How to enable macro security settings to Low in LibreOffice](https://github.com/Punith1117/report-kit/issues/1).
+If you need help adding a directory to Trusted Sources, see [Issue #1](https://github.com/Punith1117/report-kit/issues/1) for a demonstration.
 
 ---
 

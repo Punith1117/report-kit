@@ -3,17 +3,13 @@
 LibreOffice Basic macro used by the build pipeline to apply borders
 to every table in the generated ODT document.
 
-The macro is stored in `reference.odt` under:
+The macro is stored in `content-reference.odt` under:
 
 Standard -> Module1 -> AddBordersToAllTables
 
-The build pipeline invokes it with:
+The build pipeline invokes it with `npm run build`
 
-```
-soffice --headless --norestore \
-  "output/report.odt" \
-  "macro://./Standard.Module1.AddBordersToAllTables"
-```
+The build automatically applies table borders using the LibreOffice macro. LibreOffice must have the project directory added to Trusted Sources. See [Issue #1](https://github.com/Punith1117/report-kit/issues/1) for a demonstration.
 
 ```text
 Sub AddBordersToAllTables()
