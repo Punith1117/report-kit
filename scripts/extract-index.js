@@ -1,5 +1,6 @@
-const fs = require("node:fs/promises");
-const path = require("node:path");
+import fs from "node:fs/promises";
+import path from "node:path";
+import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs";
 
 /*
  * --------------------------------------------------
@@ -43,10 +44,6 @@ const CONFIG = {
  */
 
 async function extractIndex(pdfPath) {
-  const pdfjsLib = await import(
-    "pdfjs-dist/legacy/build/pdf.mjs"
-  );
-
   const data = new Uint8Array(
     await fs.readFile(pdfPath)
   );

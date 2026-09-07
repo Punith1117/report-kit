@@ -1,7 +1,7 @@
-const express = require("express");
-const chokidar = require("chokidar");
-const WebSocket = require("ws");
-const { exec } = require("child_process");
+import express from "express";
+import chokidar from "chokidar";
+import WebSocket, { WebSocketServer } from "ws";
+import { exec } from "node:child_process";
 
 const PORT = 3000;
 
@@ -104,7 +104,7 @@ const server = app.listen(PORT, () => {
   openBrowser(url);
 });
 
-const wss = new WebSocket.Server({ server });
+const wss = new WebSocketServer({ server });
 
 function broadcast(message) {
   wss.clients.forEach((client) => {
