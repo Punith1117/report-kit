@@ -40,30 +40,19 @@ See [Usage](documentation/usage.md) for instructions on editing, building, previ
 
 ```text
 .
-├── assets/
-├── content/
-├── documentation/
-├── filters/
-├── output/
-│   ├── odt/
-│   │   ├── 02_index.odt
-│   │   └── 03_content.odt
-│   ├── pdf/
-│   │   ├── 01_cover.pdf
-│   │   ├── 02_index.pdf
-│   │   └── 03_content.pdf
-│   └── final_report.pdf
-├── reference/
-│   ├── content-reference.odt
-│   └── index-reference.odt
-├── scripts/
-│   ├── build.sh
-│   └── preview_build.sh
-├── viewer/
-├── combine_pdfs.js
-├── index.md
-├── preview-server.js
-└── package.json
+├── assets/             # Images and other assets
+├── content/            # Report Markdown files
+├── documentation/      # Guides and documentation
+├── filters/            # Pandoc Lua filters
+├── output/             # Generated ODT, PDF, and Markdown files
+├── reference/          # ODT formatting templates
+├── scripts/            # Build and processing scripts
+├── viewer/             # Live preview UI
+├── preview-server.js   # Preview server
+├── setup.sh            # Checks required system dependencies
+├── setup.ps1           # Checks and installs required system dependencies
+├── package.json
+└── README.md
 ```
 
 ---
@@ -106,16 +95,9 @@ output/pdf/
 
 Files are combined in alphabetical filename order.
 
-The default generated files are:
+The default generated files are: `02_index.pdf`, `03_content.pdf`
 
-02_index.pdf
-03_content.pdf
-
-Additional PDFs can be added using numeric prefixes. For example:
-
-01_cover.pdf
-02_index.pdf
-03_content.pdf
+Additional PDFs can be added using numeric prefixes. For example: `01_cover.pdf`
 
 Run:
 
@@ -125,9 +107,21 @@ npm run combine
 
 This generates:
 
-output/final_report.pdf
+`output/final_report.pdf`
 
-The PDF combination is performed locally using `pdf-lib`.
+---
+
+## Finalizing the Report
+
+To generate the complete report and produce the final submission PDF in one command, run:
+
+`npm run finalize`
+
+This runs the build and PDF combination steps in sequence:
+
+Build -> Generate ODT + PDF -> Combine -> final_report.pdf
+
+Use `npm run build` and `npm run combine` separately when you need to work with the individual stages. Use `npm run finalize` when you simply want to generate the final report.
 
 ---
 

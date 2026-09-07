@@ -63,6 +63,18 @@ output/final_report.pdf
 
 The PDF combiner can automatically insert blank pages when configured sections need to start on a right-hand page. This behavior can be customized in `combine_pdfs.js`.
 
+## Finalize
+
+Generate the complete report and combine its PDFs into the final document:
+
+```
+npm run finalize
+```
+
+This is a convenience command that runs both: `npm run build`, `npm run combine`
+
+Use it when you want to produce the final report without running the individual build and combination steps separately.
+
 ## Customize Formatting
 
 The report's visual formatting is controlled by the reference document:
