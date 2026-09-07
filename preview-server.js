@@ -9,6 +9,21 @@ let buildRunning = false;
 let buildQueued = false;
 let buildTimer = null;
 
+function openBrowser(url) {
+  const command =
+    process.platform === "win32"
+      ? `start "" "${url}"`
+      : process.platform === "darwin"
+        ? `open "${url}"`
+        : `xdg-open "${url}"`;
+
+  exec(command, (error) => {
+    if (error) {
+      console.log(`Open ${url} in your browser.`);
+    }
+  });
+}
+
 function runBuild() {
   if (buildRunning) {
     buildQueued = true;
@@ -82,7 +97,11 @@ app.use(
 app.use("/", express.static("viewer"));
 
 const server = app.listen(PORT, () => {
-  console.log(`Preview server running at http://localhost:${PORT}`);
+  const url = `http://localhost:${PORT}`;
+
+  console.log(`Preview server running at ${url}`);
+
+  openBrowser(url);
 });
 
 const wss = new WebSocket.Server({ server });
