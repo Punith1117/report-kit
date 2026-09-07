@@ -195,3 +195,16 @@ For multiple paragraphs inside a block quote:
 >
 > This is the second paragraph.
 ```
+
+---
+
+## 9. TeX Mathematics
+
+Pandoc-compatible TeX math can be used for mathematical expressions and equations.
+
+### Inline Math
+
+Use single `$` delimiters for inline mathematics:
+
+```md
+The temperature is represented by $T$ and the threshold is represented by $T_{\mathrm{threshold}}$.
