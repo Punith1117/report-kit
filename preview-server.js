@@ -9,6 +9,8 @@ let buildRunning = false;
 let buildQueued = false;
 let buildTimer = null;
 
+const PDF_URL = "/output/pdf/03_content.pdf";
+
 function openBrowser(url) {
   const command =
     process.platform === "win32"
@@ -70,31 +72,20 @@ const app = express();
 app.use("/output", express.static("output"));
 
 app.use(
-  "/pdfjs/build",
-  express.static("node_modules/pdfjs-dist/build")
+  "/pdfjs",
+  express.static("viewer/pdfjs")
 );
 
 app.use(
-  "/pdfjs/web",
-  express.static("node_modules/pdfjs-dist/web")
+  "/pdfjs_adapter.js",
+  express.static("viewer/pdfjs_adapter.js")
 );
 
-app.use(
-  "/pdfjs/cmaps",
-  express.static("node_modules/pdfjs-dist/cmaps")
-);
-
-app.use(
-  "/pdfjs/standard_fonts",
-  express.static("node_modules/pdfjs-dist/standard_fonts")
-);
-
-app.use(
-  "/pdfjs/wasm",
-  express.static("node_modules/pdfjs-dist/wasm")
-);
-
-app.use("/", express.static("viewer"));
+app.get("/", (req, res) => {
+  res.redirect(
+    `/pdfjs/web/viewer.html?file=${PDF_URL}`
+  );
+});
 
 const server = app.listen(PORT, () => {
   const url = `http://localhost:${PORT}`;
