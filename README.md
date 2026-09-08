@@ -47,7 +47,7 @@ See [Usage](documentation/usage.md) for instructions on editing, building, previ
 ├── output/             # Generated ODT, PDF, and Markdown files
 ├── reference/          # ODT formatting templates
 ├── scripts/            # Build and processing scripts
-├── viewer/             # Live preview UI
+├── viewer/             # PDF.js viewer and Report Kit preview adapter
 ├── preview-server.js   # Preview server
 ├── setup.sh            # Checks required system dependencies
 ├── setup.ps1           # Checks and installs required system dependencies
@@ -139,7 +139,11 @@ Then open:
 http://localhost:3000
 ```
 
-The preview automatically rebuilds the content PDF when any of its dependencies change:
+The preview server watches the report dependencies with Chokidar. When a change is detected, it rebuilds the content PDF and notifies the browser through a local WebSocket connection.
+
+The browser then reloads the PDF without requiring a full page refresh.
+
+The below are the dependencies that trigger a rebuild:
 
 - content/
 - assets/
@@ -148,6 +152,8 @@ The preview automatically rebuilds the content PDF when any of its dependencies 
 - reference/content-reference.odt
 
 The preview intentionally skips Index generation to keep rebuilds fast.
+
+It uses the PDF.js generic viewer for PDF rendering and navigation. The PDF.js viewer is bundled locally under `viewer/pdfjs/`, so the preview does not depend on an external PDF viewer or CDN.
 
 ---
 
@@ -182,6 +188,7 @@ documentation/AddBordersToAllTables.md
 ## Documentation
 
 - [Installation](documentation/installation.md) — setup instructions for Linux and Windows
+- [Usage](documentation/usage.md) — editing, building, previewing, and generating reports
 - [Syntax Guide](documentation/syntax-guide.md) — Markdown conventions and supported report syntax
 - [AddBordersToAllTables](documentation/AddBordersToAllTables.md) — implementation details of the automated table-border macro
 
