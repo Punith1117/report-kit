@@ -42,14 +42,12 @@ async function main() {
   console.log("Generated: output/odt/03_content.odt");
 
   // 2. Apply table borders to content
-  await run("soffice", [
-    "--headless",
-    "--norestore",
+  await run("node", [
+    "scripts/add-table-borders.js",
     "output/odt/03_content.odt",
-    "macro://./Standard.Module1.AddBordersToAllTables",
   ]);
 
-  console.log("Content macro completed: Tables formatted");
+  console.log("Content tables formatted");
 
   // 3. Convert content ODT to PDF
   await run("soffice", [
@@ -78,14 +76,12 @@ async function main() {
   console.log("Generated: output/odt/02_index.odt");
 
   // 6. Apply table borders to index
-  await run("soffice", [
-    "--headless",
-    "--norestore",
+  await run("node", [
+    "scripts/add-table-borders.js",
     "output/odt/02_index.odt",
-    "macro://./Standard.Module1.AddBordersToAllTables",
   ]);
 
-  console.log("Index macro completed: Tables formatted");
+  console.log("Index tables formatted");
 
   // 7. Convert index ODT to PDF
   await run("soffice", [
