@@ -15,8 +15,10 @@
   "license": "GPL-3.0-or-later",
   "type": "module",
   "dependencies": {
+    "@xmldom/xmldom": "^0.9.12",
     "chokidar": "^5.0.0",
     "express": "^5.2.1",
+    "jszip": "^3.10.2",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^6.2.108",
     "ws": "^8.21.0"

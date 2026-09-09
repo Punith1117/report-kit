@@ -44,15 +44,13 @@ async function main() {
 
   console.log("Generated: output/odt/03_content.odt");
 
-  // 2. Apply table borders
-  await run("soffice", [
-    "--headless",
-    "--norestore",
-    "output/odt/03_content.odt",
-    "macro://./Standard.Module1.AddBordersToAllTables"
+  // 2. Apply table borders directly to ODT XML
+  await run("node", [
+    "scripts/add-table-borders.js",
+    "output/odt/03_content.odt"
   ], root);
 
-  console.log("Content macro completed: Tables formatted");
+  console.log("Content ODT post-processing completed: Tables formatted");
 
   // 3. Convert content ODT to PDF
   await run("soffice", [
