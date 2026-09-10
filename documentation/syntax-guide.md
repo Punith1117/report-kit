@@ -136,8 +136,6 @@ Table captions are automatically numbered.
 
 Column widths can be adjusted by changing the width of the column separators.
 
-Table borders are applied during the build using the LibreOffice macro.
-
 ---
 
 ## 7. Code Blocks
