@@ -43,6 +43,58 @@ $dependencies = @(
 )
 
 # ----------------------------------------
+# Minimum supported versions
+# ----------------------------------------
+
+$MinimumVersions = @{
+    Pandoc = [version]"3.4"
+    Node.js = [version]"22.0.0"
+}
+
+# ----------------------------------------
+# Functions: version checking
+# ----------------------------------------
+
+function Get-VersionNumber {
+    param (
+        [string]$VersionOutput
+    )
+
+    if ($VersionOutput -match '(\d+\.\d+(?:\.\d+)?)') {
+        return [version]$Matches[1]
+    }
+
+    return $null
+}
+
+function Test-VersionMinimum {
+    param (
+        [string]$Name,
+        [string]$VersionOutput
+    )
+
+    if (-not $MinimumVersions.ContainsKey($Name)) {
+        return $true
+    }
+
+    $installedVersion = Get-VersionNumber $VersionOutput
+    $minimumVersion = $MinimumVersions[$Name]
+
+    if ($null -eq $installedVersion) {
+        Write-Host "  [WARNING] Could not determine $Name version." -ForegroundColor Yellow
+        return $false
+    }
+
+    if ($installedVersion -lt $minimumVersion) {
+        Write-Host "  [UNSUPPORTED] $Name $installedVersion" -ForegroundColor Red
+        Write-Host "  Minimum required version: $minimumVersion" -ForegroundColor Yellow
+        return $false
+    }
+
+    return $true
+}
+
+# ----------------------------------------
 # Functions: PATH management
 # ----------------------------------------
 
@@ -147,9 +199,14 @@ foreach ($dependency in $dependencies) {
             $version = "installed"
         }
 
-        Write-Host "  [OK] $name - $version" -ForegroundColor Green
-        Write-Host ""
+        if (Test-VersionMinimum $name $version) {
+            Write-Host "  [OK] $name - $version" -ForegroundColor Green
+        }
+        else {
+            $failed = $true
+        }
 
+        Write-Host ""
         continue
     }
 
@@ -216,7 +273,12 @@ foreach ($dependency in $dependencies) {
             $version = "available"
         }
 
-        Write-Host "[OK] $name -> $version" -ForegroundColor Green
+        if (Test-VersionMinimum $name $version) {
+            Write-Host "[OK] $name -> $version" -ForegroundColor Green
+        }
+        else {
+            $failed = $true
+        }
     }
     else {
         Write-Host "[FAILED] $name -> '$command' not found in PATH" -ForegroundColor Red
