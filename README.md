@@ -79,9 +79,7 @@ output/
 
 The Index and report content are generated separately so they can be combined with externally provided PDFs, such as a cover page, in a controlled order.
 
-Both ODT files are automatically processed with the `AddBordersToAllTables` LibreOffice macro before PDF generation.
-
-> **Note:** Add the project directory to LibreOffice's **Trusted Sources** in the Macro Security settings so that the automated macro can run. See [Issue #1](https://github.com/Punith1117/report-kit/issues/1) for a demonstration.
+Generated ODT files are post-processed directly at the XML level to apply table borders before PDF generation. 
 
 ---
 
@@ -175,12 +173,6 @@ reference/content-reference.odt
 reference/index-reference.odt
 ```
 
-The source of the automated table-border macro is documented in:
-
-```text
-documentation/AddBordersToAllTables.md
-```
-
 > Table captions use the TableCaption paragraph style, which must exist in the reference ODT.
 
 ---
@@ -190,7 +182,6 @@ documentation/AddBordersToAllTables.md
 - [Installation](documentation/installation.md) — setup instructions for Linux and Windows
 - [Usage](documentation/usage.md) — editing, building, previewing, and generating reports
 - [Syntax Guide](documentation/syntax-guide.md) — Markdown conventions and supported report syntax
-- [AddBordersToAllTables](documentation/AddBordersToAllTables.md) — implementation details of the automated table-border macro
 
 ---
 
