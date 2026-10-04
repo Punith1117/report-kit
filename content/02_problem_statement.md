@@ -38,5 +38,3 @@ Whenever the measured temperature exceeds a predefined threshold value, the syst
 ---
 
 The proposed system provides an efficient, reliable, and cost-effective solution for real-time temperature monitoring applications. It improves safety, reduces manual effort, and ensures immediate response during critical temperature conditions. The system is particularly useful in environments where continuous monitoring is essential to prevent damage and ensure operational stability.
-
-\newpage

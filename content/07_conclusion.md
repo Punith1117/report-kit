@@ -31,4 +31,3 @@ The future enhancements of the project may include:
 
 The future improvements can make the system more advanced, intelligent, and suitable for large-scale industrial and smart monitoring applications. The project provides a strong foundation for developing advanced IoT-based environmental monitoring systems.
 
-\newpage

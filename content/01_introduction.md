@@ -6,4 +6,4 @@ With the rapid development of embedded systems and Internet of Things (IoT) tech
 
 The introduction chapter provides the overall background, objectives, scope, and significance of the project. It explains the importance of automated temperature monitoring systems and describes how the proposed project attempts to overcome the limitations of manual monitoring methods. The chapter also introduces the technologies and hardware components used in the implementation of the system and provides a strong foundation for the remaining chapters of the project report.
 
-\newpage
+

@@ -105,3 +105,16 @@ reference/index-reference.odt
 Report Kit's build scripts define which transformations are applied to the Markdown.
 
 For example, the automatic heading, table, and figure numbering is enabled through Lua filters in the build scripts. These filters can be removed or changed if different numbering behavior is required.
+
+---
+
+## IEEE Paper Support
+
+Report Kit natively supports standard IEEE Conference paper formatting without requiring LaTeX.
+
+When `reference/content-reference.odt` contains IEEE multi-column section styles:
+1. **Title & Subtitle**: Kept at the page level in single column across the page.
+2. **Author Block**: Formatted in a 3-column section (`Sect1`) with column breaks between authors.
+3. **Paper Body**: Formatted in a 2-column section (`Sect2`) flowing across all pages.
+
+ODT sections and table borders are automatically applied directly at the XML level during `npm run build` and `npm run preview`.

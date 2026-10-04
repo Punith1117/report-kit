@@ -74,7 +74,13 @@ or:
 \pagebreak
 ```
 
-Both are handled by `filters/pagebreak.lua`.
+For multi-column documents (such as IEEE papers), use a column break to break to the next column:
+
+```md
+\columnbreak
+```
+
+These commands are handled by `filters/pagebreak.lua`.
 
 For additional spacing:
 
@@ -206,3 +212,73 @@ Use single `$` delimiters for inline mathematics:
 
 ```md
 The temperature is represented by $T$ and the threshold is represented by $T_{\mathrm{threshold}}$.
+```
+
+---
+
+## 10. IEEE Paper Format (Title & Multi-Column Authors)
+
+When using an IEEE conference template, Report Kit automatically formats the paper:
+- **Title and Subtitle**: Single column (full page width)
+- **Author Affiliations**: 3 columns side-by-side (`Sect1`)
+- **Paper Body**: 2 columns (`Sect2`)
+
+### Option A: YAML Frontmatter (Recommended)
+
+Place a YAML frontmatter block in `content/00_title.md` or at the top of your first markdown file:
+
+```yaml
+---
+title: "Autonomous Temperature Monitoring and Alert System Using ESP32"
+authors:
+  - name: "1st Given Name Surname"
+    dept: "dept. name of organization (of Affiliation)"
+    org: "name of organization (of Affiliation)"
+    location: "City, Country"
+    email: "email address or ORCID"
+  - name: "2nd Given Name Surname"
+    dept: "dept. name of organization (of Affiliation)"
+    org: "name of organization (of Affiliation)"
+    location: "City, Country"
+    email: "email address or ORCID"
+  - name: "3rd Given Name Surname"
+    dept: "dept. name of organization (of Affiliation)"
+    org: "name of organization (of Affiliation)"
+    location: "City, Country"
+    email: "email address or ORCID"
+---
+```
+
+### Option B: Markdown Divs
+
+Alternatively, specify authors using markdown fenced divs:
+
+```markdown
+# Autonomous Temperature Monitoring and Alert System Using ESP32
+
+::: {.authors}
+::: {.author}
+**1st Given Name Surname**\
+dept. name of organization (of Affiliation)\
+name of organization (of Affiliation)\
+City, Country\
+email address or ORCID
+:::
+
+::: {.author}
+**2nd Given Name Surname**\
+dept. name of organization (of Affiliation)\
+name of organization (of Affiliation)\
+City, Country\
+email address or ORCID
+:::
+
+::: {.author}
+**3rd Given Name Surname**\
+dept. name of organization (of Affiliation)\
+name of organization (of Affiliation)\
+City, Country\
+email address or ORCID
+:::
+:::
+```

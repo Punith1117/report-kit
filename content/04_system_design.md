@@ -74,8 +74,7 @@ The Level 1 DFD shows that the DHT22 sensor sends temperature data to the ESP32 
 
 The flow chart represents the complete operational sequence of the Temperature Monitoring and Alert System using ESP32.
 
-![Flow Chart of Proposed System](assets/images/dfd.png){width=3in height=3in}
+![Flow Chart of Proposed System](assets/images/dfd.png){width=2in height=3in}
 
 The flow chart begins with system initialization. The DHT22 sensor continuously monitors the environmental temperature and sends the readings to the ESP32 controller. The ESP32 compares the temperature value with the predefined threshold condition. If the temperature exceeds the threshold value, the buzzer is activated automatically; otherwise, the buzzer remains OFF. The temperature readings are displayed continuously on the Serial Monitor, and the process repeats continuously for real-time monitoring.
 
-\newpage

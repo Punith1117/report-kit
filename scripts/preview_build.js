@@ -33,6 +33,7 @@ async function main() {
     ...files,
     "-o", "output/odt/03_content.odt",
     "--reference-doc=reference/content-reference.odt",
+    "--lua-filter=filters/authors.lua",
     "--lua-filter=filters/number-tables.lua",
     "--lua-filter=filters/number-images.lua",
     "--lua-filter=filters/pagebreak.lua",
@@ -41,7 +42,16 @@ async function main() {
 
   console.log("Generated: output/odt/03_content.odt");
 
-  // 2. Apply table borders directly to ODT XML
+  // 2. Format IEEE multi-column sections (3-column authors, 2-column body)
+  await run("node", [
+    "scripts/format-sections.js",
+    "output/odt/03_content.odt",
+    "reference/content-reference.odt"
+  ], root);
+
+  console.log("Content sections formatted");
+
+  // 3. Apply table borders directly to ODT XML
   await run("node", [
     "scripts/add-table-borders.js",
     "output/odt/03_content.odt"

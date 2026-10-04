@@ -118,4 +118,3 @@ The proposed Temperature Monitoring and Alert System is technically feasible bec
 
 The system is economically feasible because it uses low-cost components such as ESP32, DHT22 sensor, and buzzer, making the overall implementation cost affordable. The project is also operationally feasible because the system is easy to operate, monitor, and maintain. The proposed solution provides reliable temperature monitoring and alert generation with minimal human intervention, making it suitable for practical real-time applications.
 
-\newpage
