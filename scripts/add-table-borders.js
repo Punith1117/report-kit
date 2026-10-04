@@ -22,7 +22,7 @@ if (!INPUT_FILE) {
   process.exit(1);
 }
 
-const BORDER = "1.4pt solid #000000";
+const BORDER = "0.7pt solid #000000";
 
 // ------------------------------------------------------------
 // Namespaces
