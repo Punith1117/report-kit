@@ -15,7 +15,9 @@ No formatting by hand. No cloud service. No special writing application.
 - Markdown-based report authoring
 - Multiple Markdown files combined into a report
 - Automatic heading, figure, and table numbering
+- IEEE-style citations and bibliography from a BibTeX file
 - Automatic Index generation
+- IEEE conference paper formatting (two-column layout with author block)
 - Template-based ODT styling
 - ODT → PDF conversion
 - Live PDF preview with automatic rebuilds
@@ -45,7 +47,8 @@ See [Usage](documentation/usage.md) for instructions on editing, building, previ
 ├── documentation/      # Guides and documentation
 ├── filters/            # Pandoc Lua filters
 ├── output/             # Generated ODT, PDF, and Markdown files
-├── reference/          # ODT formatting templates
+├── reference/          # ODT formatting templates and citation style
+├── references.bib      # Bibliography database for citations
 ├── scripts/            # Build and processing scripts
 ├── viewer/             # PDF.js viewer and Report Kit preview adapter
 ├── preview-server.js   # Preview server
@@ -146,6 +149,8 @@ The below are the dependencies that trigger a rebuild:
 - content/
 - assets/
 - filters/
+- references.bib
+- reference/ieee.csl
 - scripts/preview_build.js
 - reference/content-reference.odt
 
@@ -174,6 +179,10 @@ reference/index-reference.odt
 ```
 
 > Table captions use the TableCaption paragraph style, which must exist in the reference ODT.
+
+The content template by default uses an IEEE conference layout: the title stays full-width, authors are arranged in a three-column block (from YAML frontmatter or `::: {.authors}` divs in `content/00_title.md`), and the body flows in two columns. Figures are centered through the `FigureWithCaption` paragraph style.
+
+Citations use `references.bib` with the IEEE numeric style in `reference/ieee.csl` — cite with `[@key]` in Markdown and the numbered bibliography is generated automatically under `# BIBLIOGRAPHY`. 
 
 ---
 
