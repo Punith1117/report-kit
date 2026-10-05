@@ -22,7 +22,7 @@ The major limitations of the existing system include:
 
 ## Proposed System & Advantages
 
-The proposed **Temperature Monitoring and Alert System** using **ESP32** is designed to overcome these limitations by providing continuous and automated temperature monitoring using a **DHT22 sensor** and **ESP32 microcontroller**.
+The proposed **Temperature Monitoring and Alert System** using **ESP32** is designed to overcome these limitations by providing continuous and automated temperature monitoring using a **DHT22 sensor** and **ESP32 microcontroller**, following established hands-on IoT system design practices [@bahga2015].
 
 Whenever the measured temperature exceeds a predefined threshold value, the system automatically activates a buzzer to alert the user immediately.
 

@@ -8,7 +8,7 @@ The Temperature Monitoring and Alert System using ESP32 was successfully designe
 
 The project demonstrated reliable real-time temperature monitoring and automatic alert generation. The DHT22 sensor provided accurate temperature readings, while the ESP32 controller responded quickly to abnormal temperature conditions. The buzzer alert mechanism helped in notifying the user immediately during high-temperature situations. The system also displayed real-time temperature readings on the Serial Monitor for continuous observation and analysis.
 
-The proposed system provides a simple, low-cost, reliable, and efficient solution for temperature monitoring applications. The project helps in reducing manual monitoring effort and improving safety in environments where continuous temperature observation is necessary. The system can be effectively used in industries, laboratories, homes, server rooms, and electronic equipment protection systems.
+The proposed system provides a simple, low-cost, reliable, and efficient solution for temperature monitoring applications. The project helps in reducing manual monitoring effort and improving safety in environments where continuous temperature observation is necessary. The system can be effectively used in industries, laboratories, homes, server rooms, and electronic equipment protection systems, similar to reported smart-home IoT deployments [@kumar2024].
 
 ---
 
@@ -29,5 +29,5 @@ The future enhancements of the project may include:
 - Development of web-based monitoring dashboard
 - Battery backup support for uninterrupted operation
 
-The future improvements can make the system more advanced, intelligent, and suitable for large-scale industrial and smart monitoring applications. The project provides a strong foundation for developing advanced IoT-based environmental monitoring systems.
+The future improvements can make the system more advanced, intelligent, and suitable for large-scale industrial and smart monitoring applications, extending toward cloud-connected IoT monitoring architectures [@verma2023]. The project provides a strong foundation for developing advanced IoT-based environmental monitoring systems.
 

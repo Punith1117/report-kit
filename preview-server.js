@@ -110,6 +110,8 @@ chokidar
     "content",
     "assets",
     "filters",
+    "references.bib",
+    "reference/ieee.csl",
     "scripts/preview_build.js",
     "reference/content-reference.odt",
   ], {

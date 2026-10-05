@@ -294,6 +294,66 @@ async function checkTemplateUsesSections(refPath) {
 }
 
 // ------------------------------------------------------------
+// Unwrap Pandoc-generated style-less sections (citeproc refs)
+// ------------------------------------------------------------
+
+function flattenUnstyledSections(officeText) {
+  /*
+   * Pandoc citeproc wraps the generated bibliography in nested
+   * sections without any text:style-name:
+   *
+   *   <text:section text:name="refs">
+   *     <text:section text:name="ref-<key>"><text:p>...</text:p></text:section>
+   *     ...
+   *   </text:section>
+   *
+   * LibreOffice renders each nested section as its own layout region
+   * (single-column default), which drops the bibliography out of the
+   * outer 2-column MainContentSection flow even though it is
+   * structurally inside it.
+   *
+   * Splice the children of style-less sections in place and remove the
+   * section element. Our own sections (AuthorSection_*,
+   * MainContentSection) always carry text:style-name (Sect1/Sect2),
+   * so they are never touched. Repeat until none remain to handle
+   * refs -> ref-* nesting.
+   */
+  let flattened = 0;
+  let changed = true;
+
+  while (changed) {
+    changed = false;
+    const sections = Array.from(
+      officeText.getElementsByTagNameNS(NS.TEXT, "section")
+    );
+
+    for (const section of sections) {
+      if (getAttributeNS(section, NS.TEXT, "style-name")) {
+        continue;
+      }
+
+      const parent = section.parentNode;
+      if (!parent) {
+        continue;
+      }
+
+      while (section.firstChild) {
+        parent.insertBefore(section.firstChild, section);
+      }
+      parent.removeChild(section);
+      flattened++;
+      changed = true;
+    }
+  }
+
+  if (flattened > 0) {
+    console.log(
+      `Flattened ${flattened} unstyled section(s) (e.g. citeproc refs)`
+    );
+  }
+}
+
+// ------------------------------------------------------------
 // Document Restructuring into Sections
 // ------------------------------------------------------------
 
@@ -332,6 +392,10 @@ function formatDocumentSections(document) {
       return;
     }
   }
+
+  // Flatten citeproc refs sections BEFORE partitioning so bibliography
+  // paragraphs become direct flow content (see flattenUnstyledSections).
+  flattenUnstyledSections(officeText);
 
   const allChildren = elements(officeText);
 

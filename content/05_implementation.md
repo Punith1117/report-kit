@@ -36,7 +36,7 @@ The DHT22 sensor sends temperature readings to the ESP32 through GPIO4 pin. The 
 
 ## Software Configuration
 
-The software implementation of the project is carried out using Arduino IDE. The ESP32 board package and DHT sensor library are installed in the Arduino IDE to support programming and communication with the sensor.
+The software implementation of the project is carried out using Arduino IDE [@arduino2025]. The ESP32 board package and DHT sensor library are installed in the Arduino IDE to support programming and communication with the sensor.
 
 The following software configuration steps are performed during implementation:
 

@@ -44,7 +44,7 @@ Table: Hardware Centre Test Requirements
  7          Power Supply               Provides electrical power to the system
 ---------- -------------------------- -----------------------------------------------------
 
-The ESP32 microcontroller acts as the main controller of the system. The DHT22 sensor continuously senses the temperature and sends the measured values to the ESP32. The buzzer acts as an output device and produces an alert sound whenever the temperature crosses the threshold limit.
+The ESP32 microcontroller acts as the main controller of the system. The DHT22 sensor continuously senses the temperature and sends the measured values to the ESP32. Alternative controller platforms such as Raspberry Pi are available for larger gateway roles [@raspberrypi2025], but the ESP32 was selected here for its lower cost and power consumption. The buzzer acts as an output device and produces an alert sound whenever the temperature crosses the threshold limit.
 
 ---
 
@@ -116,4 +116,4 @@ where $A=1$ indicates that the buzzer should be activated and $A=0$ indicates th
 
 The proposed Temperature Monitoring and Alert System is technically feasible because all the required hardware and software components are easily available and compatible with each other. The project can be implemented using simple embedded system concepts and basic electronic components.
 
-The system is economically feasible because it uses low-cost components such as ESP32, DHT22 sensor, and buzzer, making the overall implementation cost affordable. The project is also operationally feasible because the system is easy to operate, monitor, and maintain. The proposed solution provides reliable temperature monitoring and alert generation with minimal human intervention, making it suitable for practical real-time applications.
+The system is economically feasible because it uses low-cost components such as ESP32, DHT22 sensor, and buzzer, making the overall implementation cost affordable, in line with the low-cost IoT deployment models described for large-scale adoption [@kranz2016]. The project is also operationally feasible because the system is easy to operate, monitor, and maintain. The proposed solution provides reliable temperature monitoring and alert generation with minimal human intervention, making it suitable for practical real-time applications.

@@ -1,4 +1,5 @@
 import { mkdir, readdir } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
@@ -25,6 +26,19 @@ async function main() {
     .sort()
     .map((file) => join("content", file));
 
+  // Citations: only enable citeproc when both files exist,
+  // so reports without a .bib keep building (manual bibliography fallback).
+  const citeArgs = [];
+  if (existsSync(join(root, "references.bib")) && existsSync(join(root, "reference", "ieee.csl"))) {
+    citeArgs.push(
+      "--citeproc",
+      "--bibliography=references.bib",
+      "--csl=reference/ieee.csl",
+    );
+  } else {
+    console.warn("Skipping citeproc: references.bib and/or reference/ieee.csl not found");
+  }
+
   // 1. Generate content ODT
   await run("pandoc", [
     ...files,
@@ -35,6 +49,7 @@ async function main() {
     "--lua-filter=filters/number-images.lua",
     "--lua-filter=filters/pagebreak.lua",
     "--table-caption-position=below",
+    ...citeArgs,
   ]);
 
   console.log("Generated: output/odt/03_content.odt");

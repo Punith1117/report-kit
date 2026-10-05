@@ -144,7 +144,30 @@ Column widths can be adjusted by changing the width of the column separators.
 
 ---
 
-## 7. Code Blocks
+## 7. Citations and Bibliography
+
+Citations use Pandoc citeproc with IEEE numeric style (`--citeproc --bibliography=references.bib --csl=reference/ieee.csl`, wired in `scripts/build.js` and `scripts/preview_build.js`).
+
+Most-used conventions:
+
+```md
+Single source [@sharma2023]
+
+Multiple sources [@hersent2012; @singh2022]
+
+With page locator [@arduino2025, p. 3]
+
+In-text (author name + number): @singh2022
+```
+
+* Add entries to `references.bib` (`@article`, `@book`, `@inproceedings`, `@misc`).
+* Use keys like `firstauthorYYYY` (no spaces): `sharma2023`, `hersent2012`.
+* Separate authors with `and`: `author = {Sharma, R. and Patel, K.}`.
+* `content/08_bibliography.md` contains only `# BIBLIOGRAPHY` plus `::: {#refs} :::` — Pandoc generates the numbered list there automatically.
+
+---
+
+## 8. Code Blocks
 
 Use three backticks before and after the code.
 
@@ -177,7 +200,7 @@ You can also specify the language:
 
 The code block must start and end with three backticks.
 
-## 8. Block Quotes
+## 9. Block Quotes
 
 Use `>` at the beginning of a line:
 
@@ -202,7 +225,7 @@ For multiple paragraphs inside a block quote:
 
 ---
 
-## 9. TeX Mathematics
+## 10. TeX Mathematics
 
 Pandoc-compatible TeX math can be used for mathematical expressions and equations.
 
@@ -216,7 +239,7 @@ The temperature is represented by $T$ and the threshold is represented by $T_{\m
 
 ---
 
-## 10. IEEE Paper Format (Title & Multi-Column Authors)
+## 11. IEEE Paper Format (Title & Multi-Column Authors)
 
 When using an IEEE conference template, Report Kit automatically formats the paper:
 - **Title and Subtitle**: Single column (full page width)

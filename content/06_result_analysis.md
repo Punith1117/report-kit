@@ -41,7 +41,7 @@ The implemented system provides the following advantages:
 - Reliable and efficient system performance
 - Reduced manual monitoring effort
 
-The DHT22 sensor provided stable and accurate temperature readings throughout the testing process. The ESP32 microcontroller responded quickly to temperature changes and activated the buzzer without noticeable delay. The system consumed very low power and operated efficiently during continuous monitoring.
+The DHT22 sensor provided stable and accurate temperature readings throughout the testing process. The ESP32 microcontroller responded quickly to temperature changes and activated the buzzer without noticeable delay. The logged Serial Monitor readings can additionally be exported for offline plotting and statistical analysis [@python2025]. The system consumed very low power and operated efficiently during continuous monitoring.
 
 ---
 
