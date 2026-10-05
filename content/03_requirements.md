@@ -26,23 +26,23 @@ The system continuously accepts temperature data as input from the DHT22 sensor.
 
 Table: Hardware Centre Test Requirements
 
--------- -------------------------- -----------------------------------------------------
- Sl. No   Hardware Component         Purpose
--------- -------------------------- -----------------------------------------------------
- 1        ESP32 Microcontroller      Processes sensor data and controls system operation
+---------- -------------------------- -----------------------------------------------------
+ Sl. No     Hardware Component         Purpose
+---------- -------------------------- -----------------------------------------------------
+ 1          ESP32 Microcontroller      Processes sensor data and controls system operation
  
- 2        DHT22 Temperature Sensor   Measures environmental temperature
+ 2          DHT22 Temperature Sensor   Measures environmental temperature
  
- 3        Buzzer                     Generates alert sound during high temperature
+ 3          Buzzer                     Generates alert sound during high temperature
  
- 4        Breadboard                 Used for circuit connections
+ 4          Breadboard                 Used for circuit connections
  
- 5        Jumper Wires               Connects hardware components
+ 5          Jumper Wires               Connects hardware components
  
- 6        USB Data Cable             Uploads code and powers ESP32
+ 6          USB Data Cable             Uploads code and powers ESP32
  
- 7        Power Supply               Provides electrical power to the system
--------- -------------------------- -----------------------------------------------------
+ 7          Power Supply               Provides electrical power to the system
+---------- -------------------------- -----------------------------------------------------
 
 The ESP32 microcontroller acts as the main controller of the system. The DHT22 sensor continuously senses the temperature and sends the measured values to the ESP32. The buzzer acts as an output device and produces an alert sound whenever the temperature crosses the threshold limit.
 
@@ -117,4 +117,3 @@ where $A=1$ indicates that the buzzer should be activated and $A=0$ indicates th
 The proposed Temperature Monitoring and Alert System is technically feasible because all the required hardware and software components are easily available and compatible with each other. The project can be implemented using simple embedded system concepts and basic electronic components.
 
 The system is economically feasible because it uses low-cost components such as ESP32, DHT22 sensor, and buzzer, making the overall implementation cost affordable. The project is also operationally feasible because the system is easy to operate, monitor, and maintain. The proposed solution provides reliable temperature monitoring and alert generation with minimal human intervention, making it suitable for practical real-time applications.
-

@@ -24,19 +24,19 @@ Figure 4.1 shows the overall system architecture of the Temperature Monitoring a
 
 ### Component Specifications
 
------------ ------------------- ------------------
- Component   Parameter           Specification
------------ ------------------- ------------------
- DHT22       Voltage             3.3V to 5V
- 
- DHT22       Temperature Range   -40°C to 80°C
- 
- DHT22       Humidity Range      0% to 100%
- 
- ESP32       Operating Voltage   3.3V
- 
- ESP32       WiFi                802.11 b/g/n
------------ ------------------- ------------------
+--------------------- -------------------- -----------------------
+  Component           Parameter            Specification
+--------------------- -------------------- -----------------------
+  DHT22               Voltage              3.3V to 5V
+
+  DHT22               Temperature Range    -40°C to 80°C
+
+  DHT22               Humidity Range       0% to 100%
+
+  ESP32               Operating Voltage    3.3V
+
+  ESP32               WiFi                 802.11 b/g/n
+--------------------- -------------------- -----------------------
 
 Table: Component Specifications
 
@@ -77,4 +77,3 @@ The flow chart represents the complete operational sequence of the Temperature M
 ![Flow Chart of Proposed System](assets/images/dfd.png){width=2in height=3in}
 
 The flow chart begins with system initialization. The DHT22 sensor continuously monitors the environmental temperature and sends the readings to the ESP32 controller. The ESP32 compares the temperature value with the predefined threshold condition. If the temperature exceeds the threshold value, the buzzer is activated automatically; otherwise, the buzzer remains OFF. The temperature readings are displayed continuously on the Serial Monitor, and the process repeats continuously for real-time monitoring.
-
