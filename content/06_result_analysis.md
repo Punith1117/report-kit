@@ -55,15 +55,16 @@ The following snapshots were captured during the implementation and testing of t
 - Buzzer activation during high temperature condition
 - Arduino IDE program upload screen
 
-![Hardware Setup of Proposed System](assets/images/result.png){width=2.5in height=3in}
+The hardware setup used for testing is shown in Fig. [hardware setup](#fig:hardware). The circuit connections are shown in Fig. [circuit connection](#fig:circuit). The Serial Monitor output is shown in Fig. [Serial Monitor](#fig:serial-monitor), while the buzzer activation during the high temperature condition is shown in Fig. [buzzer alert](#fig:buzzer-alert).
 
-![Circuit Connection of ESP32 and DHT22](assets/images/result.png){width=2in height=3.5in}
+![Hardware Setup of Proposed System](assets/images/result.png){#fig:hardware width=2.5in height=3in}
 
-![Serial Monitor Output](assets/images/result.png){width=3in height=3.5in}
+![Circuit Connection of ESP32 and DHT22](assets/images/result.png){#fig:circuit width=2in height=3.5in}
 
-![Buzzer Alert during High Temperature Detection](assets/images/result.png){width=3.5in height=3in}
+![Serial Monitor Output](assets/images/result.png){#fig:serial-monitor width=3in height=3.5in}
+
+![Buzzer Alert during High Temperature Detection](assets/images/result.png){#fig:buzzer-alert width=3.5in height=3in}
 
 ---
 
 The successful execution and testing of the proposed system demonstrate that the Temperature Monitoring and Alert System using ESP32 provides an effective and reliable solution for real-time temperature monitoring applications.
-

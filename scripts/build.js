@@ -21,6 +21,7 @@ async function main() {
   await mkdir(odtDir, { recursive: true });
   await mkdir(pdfDir, { recursive: true });
 
+  // Get Markdown files in deterministic alphabetical order
   const files = (await readdir(join(root, "content")))
     .filter((file) => file.endsWith(".md"))
     .sort()
@@ -29,32 +30,59 @@ async function main() {
   // Citations: only enable citeproc when both files exist,
   // so reports without a .bib keep building (manual bibliography fallback).
   const citeArgs = [];
-  if (existsSync(join(root, "references.bib")) && existsSync(join(root, "reference", "ieee.csl"))) {
+
+  if (
+    existsSync(join(root, "references.bib")) &&
+    existsSync(join(root, "reference", "ieee.csl"))
+  ) {
     citeArgs.push(
       "--citeproc",
       "--bibliography=references.bib",
       "--csl=reference/ieee.csl",
     );
   } else {
-    console.warn("Skipping citeproc: references.bib and/or reference/ieee.csl not found");
+    console.warn(
+      "Skipping citeproc: references.bib and/or reference/ieee.csl not found"
+    );
   }
 
-  // 1. Generate content ODT
+  // 1. Generate content ODT with native numbering and cross-references
   await run("pandoc", [
     ...files,
     "-o", "output/odt/03_content.odt",
     "--reference-doc=reference/content-reference.odt",
+
     "--lua-filter=filters/authors.lua",
-    "--lua-filter=filters/number-tables.lua",
-    "--lua-filter=filters/number-images.lua",
     "--lua-filter=filters/pagebreak.lua",
+    "--lua-filter=filters/table-identifiers.lua",
+
     "--table-caption-position=below",
+
+    "-t", "odt+native_numbering+xrefs_number",
+
     ...citeArgs,
   ]);
 
   console.log("Generated: output/odt/03_content.odt");
 
-  // 2. Format IEEE multi-column sections (3-column authors, 2-column body)
+  // 2. Format native table numbering
+  await run("node", [
+    "scripts/format-table-numbering.js",
+    "output/odt/03_content.odt",
+  ]);
+
+  console.log("Table numbering formatted");
+
+  // 3. Change native figure caption labels from "Figure" to "Fig."
+  await run("node", [
+    "scripts/format-figure-labels.js",
+    "output/odt/03_content.odt",
+  ]);
+
+  console.log("Figure labels formatted");
+
+  // 4. Format IEEE multi-column sections
+  //    (3-column authors, 2-column body)
   await run("node", [
     "scripts/format-sections.js",
     "output/odt/03_content.odt",
@@ -63,7 +91,7 @@ async function main() {
 
   console.log("Content sections formatted");
 
-  // 3. Apply table borders to content
+  // 5. Apply table borders directly to ODT XML
   await run("node", [
     "scripts/add-table-borders.js",
     "output/odt/03_content.odt",
@@ -71,7 +99,7 @@ async function main() {
 
   console.log("Content tables formatted");
 
-  // 3. Convert content ODT to PDF
+  // 6. Convert content ODT to PDF
   await run("soffice", [
     "--headless",
     "--convert-to", "pdf",
@@ -81,14 +109,14 @@ async function main() {
 
   console.log("Generated: output/pdf/03_content.pdf");
 
-  // 4. Generate index.md from content PDF
+  // 7. Generate index.md from content PDF
   await run("node", [
     "scripts/extract-index.js",
   ]);
 
   console.log("Generated: index.md");
 
-  // 5. Generate index ODT
+  // 8. Generate index ODT
   await run("pandoc", [
     "output/md/index.md",
     "-o", "output/odt/02_index.odt",
@@ -97,7 +125,7 @@ async function main() {
 
   console.log("Generated: output/odt/02_index.odt");
 
-  // 6. Apply table borders to index
+  // 9. Apply table borders to index
   await run("node", [
     "scripts/add-table-borders.js",
     "output/odt/02_index.odt",
@@ -105,7 +133,7 @@ async function main() {
 
   console.log("Index tables formatted");
 
-  // 7. Convert index ODT to PDF
+  // 10. Convert index ODT to PDF
   await run("soffice", [
     "--headless",
     "--convert-to", "pdf",
