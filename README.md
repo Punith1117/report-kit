@@ -14,7 +14,8 @@ No formatting by hand. No cloud service. No special writing application.
 
 - Markdown-based report authoring
 - Multiple Markdown files combined into a report
-- Automatic heading, figure, and table numbering
+- Automatic heading numbering
+- Figure and table numbering with cross-references
 - IEEE-style citations and bibliography from a BibTeX file
 - Automatic Index generation
 - IEEE conference paper formatting (two-column layout with author block)

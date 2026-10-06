@@ -104,7 +104,7 @@ reference/index-reference.odt
 
 Report Kit's build scripts define which transformations are applied to the Markdown.
 
-For example, the automatic heading, table, and figure numbering is enabled through Lua filters in the build scripts. These filters can be removed or changed if different numbering behavior is required.
+For example, figure and table numbering with cross-references is handled by Pandoc. Table IDs from `Table: Caption {#tbl:id}` captions are assigned through `filters/table-identifiers.lua`, and the output styling is adjusted in `scripts/format-table-numbering.js` (Roman vs Arabic) and `scripts/format-figure-labels.js` (`Figure` vs `Fig.`). These can be adjusted if different numbering behavior is required.
 
 ---
 

@@ -111,8 +111,25 @@ Second line
 
 * Keep the image in its own paragraph.
 * The caption is derived from the alt text.
-* Figure numbering is automatic.
 * Centering and caption styling are controlled by the template.
+
+### Figures with cross-references
+
+To reference a figure from the text, give it an ID with the `fig:` prefix:
+
+```md
+![System Architecture Diagram](assets/images/architecture.png){#fig:system-architecture width=3in height=2in}
+```
+
+Then reference it anywhere in the report:
+
+```md
+The overall structure is shown in Fig. [system architecture](#fig:system-architecture).
+```
+
+* The ID (for example `#fig:system-architecture`) goes inside the braces, alongside `width` and `height`.
+* IDs must be unique across the report.
+* Pandoc numbers figures automatically (`Fig. 1`, `Fig. 2`, ...) and fills in the number at each reference.
 
 ---
 
@@ -138,9 +155,26 @@ Add the caption below the table:
 Table: Software Requirements
 ```
 
-Table captions are automatically numbered.
-
 Column widths can be adjusted by changing the width of the column separators.
+
+### Tables with cross-references
+
+To reference a table from the text, add an ID with the `tbl:` prefix at the end of the caption line:
+
+```md
+Table: Component Specifications {#tbl:component-specifications}
+```
+
+Then reference it anywhere in the report:
+
+```md
+The specifications are summarized in Table [component specifications](#tbl:component-specifications).
+```
+
+* The ID goes at the end of the `Table:` caption line, after a space.
+* IDs must be unique across the report.
+* Tables without an ID are still numbered, they just cannot be referenced.
+* Pandoc numbers tables automatically and fills in the number at each reference. Tables use Roman numerals by default (`Table I`, `Table II`, ...). To use Arabic numbers instead (`Table 1`, `Table 2`, ...), set `TABLE_NUMBERING = "arabic"` in `scripts/format-table-numbering.js`.
 
 ---
 
