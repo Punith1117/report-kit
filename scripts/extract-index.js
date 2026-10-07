@@ -15,6 +15,12 @@ const CONFIG = {
   // Include starting page numbers for H2 entries.
   includeH2PageNumbers: true,
 
+  // Whether H2 headings should display their numbering.
+  //
+  // true  → "2.2 Background"
+  // false → "Background"
+  includeH2Numbering: true,
+
   // Convert titles to uppercase in the generated index.
   uppercaseTitles: false,
 
@@ -137,17 +143,38 @@ async function getOutlinePage(pdf, item) {
  */
 
 function normalizeChapterTitle(title) {
-  // Remove H1 numbering:
-  //
-  // 1. INTRODUCTION
-  // 12. CONCLUSION
-  //
-  // but leave H2 numbering untouched:
-  //
-  // 1.1 Background
-  // 2.3 Proposed System
-  //
+  /*
+   * Remove H1 numbering.
+   *
+   * Examples:
+   * 1. INTRODUCTION → INTRODUCTION
+   * 2. LITERATURE REVIEW → LITERATURE REVIEW
+   * 12. CONCLUSION → CONCLUSION
+   */
   return title.replace(/^\d+(?:\.\d+)*\.\s*/, "");
+}
+
+function normalizeSectionTitle(title) {
+  /*
+   * Remove existing H2 numbering from the PDF outline.
+   *
+   * Handles:
+   *
+   * 1.1 Background
+   * 2.2 Proposed System
+   * 5.1 Hardware Implementation
+   *
+   * and also:
+   *
+   * 1 Background
+   * 2 Software Configuration
+   * 3 Program Code
+   *
+   * The script generates the correct H2 number itself.
+   */
+  return title
+    .replace(/^\d+(?:\.\d+)*\.\s*/, "")
+    .replace(/^\d+\s+/, "");
 }
 
 function formatTitle(title, width = null) {
@@ -213,9 +240,11 @@ function generateIndexMarkdown(chapters) {
       return `:${"=".repeat(width - 1)}`;
     };
 
-    return `+${cell(serialWidth, alignment.serial)}` +
+    return (
+      `+${cell(serialWidth, alignment.serial)}` +
       `+${cell(titleWidth, alignment.title)}` +
-      `+${cell(pageWidth, alignment.page)}+`;
+      `+${cell(pageWidth, alignment.page)}+`
+    );
   };
 
   const topSeparator = makeSeparator("-");
@@ -246,7 +275,7 @@ function generateIndexMarkdown(chapters) {
   const makeEmptyRow = () =>
     makeRow("", "", "");
 
-  chapters.forEach((chapter, index) => {
+  chapters.forEach((chapter, chapterIndex) => {
     const hasH2 =
       CONFIG.includeH2 &&
       chapter.sections.length > 0;
@@ -256,47 +285,95 @@ function generateIndexMarkdown(chapters) {
       CONFIG.h1TitleWidth
     );
 
-    // H1
+    /*
+     * H1 serial number.
+     */
+    const serialNumber = CONFIG.includeSerialNumbers
+      ? String(chapterIndex + 1)
+      : "";
+
+    /*
+     * H1
+     */
     lines.push(
       makeRow(
-        String(index + 1),
+        serialNumber,
         chapterTitle,
         String(chapter.page)
       )
     );
 
-    // Empty line after H1
+    /*
+     * Empty line after H1.
+     */
     lines.push(makeEmptyRow());
 
-    // H2
+    /*
+     * H2
+     */
     if (hasH2) {
-      chapter.sections.forEach((section) => {
-        const sectionTitle = formatTitle(
-          section.title,
-          CONFIG.h2TitleWidth
-        );
+      chapter.sections.forEach(
+        (section, sectionIndex) => {
+          /*
+           * Generate H2 numbering from the hierarchy.
+           *
+           * Example:
+           *
+           * chapterIndex = 1
+           * sectionIndex = 1
+           *
+           * → 2.2
+           */
+          const h2Number = `${chapterIndex + 1}.${sectionIndex + 1}`;
 
-        lines.push(
-          makeRow(
-            "",
-            `&nbsp; ${sectionTitle}`, // &nbsp; is to indent by one space
-            CONFIG.includeH2PageNumbers
-              ? String(section.page)
-              : ""
-          )
-        );
+          /*
+           * Remove any numbering that may already exist
+           * in the PDF outline.
+           */
+          const sectionTitle = normalizeSectionTitle(
+            section.title
+          );
 
-        // Empty line after H2
-        lines.push(makeEmptyRow());
-      });
+          /*
+           * Add generated numbering only when enabled.
+           */
+          const displaySectionTitle =
+            CONFIG.includeH2Numbering
+              ? `${h2Number} ${sectionTitle}`
+              : sectionTitle;
+
+          const formattedSectionTitle = formatTitle(
+            displaySectionTitle,
+            CONFIG.h2TitleWidth
+          );
+
+          lines.push(
+            makeRow(
+              "",
+              `&nbsp; ${formattedSectionTitle}`,
+              CONFIG.includeH2PageNumbers
+                ? String(section.page)
+                : ""
+            )
+          );
+
+          /*
+           * Empty line after H2.
+           */
+          lines.push(makeEmptyRow());
+        }
+      );
     }
 
-    // Separator after complete H1 section
+    /*
+     * Separator after complete H1 section.
+     */
     lines.push(bodySeparator);
   });
 
   return lines.join("\n");
 }
+
 
 /*
  * --------------------------------------------------
