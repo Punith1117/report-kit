@@ -1,1 +1,4 @@
 node_modules
+
+# Ignore generated output
+output/
