@@ -9,6 +9,7 @@
     "combine": "node scripts/combine_pdfs.js",
     "finalize": "npm run build && npm run combine",
     "format:table-col": "node scripts/format-table-col.js",
+    "create:table": "node scripts/create-table.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
