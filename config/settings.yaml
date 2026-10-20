@@ -11,3 +11,25 @@ heading:
     h1: false
     h2: false
     h3: false
+
+index:
+  includeH2: true
+  includeH2PageNumbers: true
+  includeH2Numbering: true
+  uppercaseTitles: false
+  title: "Table of Contents"
+  table:
+    serialWidth: 8
+    titleWidth: 61
+    pageWidth: 9
+    alignment:
+      serial: center
+      title: left
+      page: center
+
+pdf:
+  combine:
+    rightHandSections:
+      - "02_index.pdf"
+      - "03_content.pdf"
+    rightHandPageParity: odd

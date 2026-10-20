@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { PDFDocument } from "pdf-lib";
+import { loadSettings } from "../config/load-settings.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,11 +20,11 @@ const outputFile = path.join(projectRoot, "output", "final_report.pdf");
 
 /*
  * --------------------------------------------------
- * Configuration
+ * Configuration (loaded from settings.yaml via loadSettings)
  * --------------------------------------------------
  */
 
-const CONFIG = {
+let CONFIG = {
   /*
    * Sections that must begin on a right-hand page.
    *
@@ -119,6 +120,13 @@ function addBlankPage(targetPdf, referencePdf = null) {
  */
 
 async function combinePDFs() {
+  // Load settings from config
+  const settings = loadSettings(projectRoot);
+
+  // Update CONFIG from settings
+  CONFIG.rightHandSections = settings.pdfRightHandSections;
+  CONFIG.rightHandPageParity = settings.pdfRightHandPageParity;
+
   const files = await fs.readdir(inputDir);
 
   const pdfFiles = files

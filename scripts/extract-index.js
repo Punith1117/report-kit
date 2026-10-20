@@ -1,14 +1,15 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs";
+import { loadSettings } from "../config/load-settings.js";
 
 /*
  * --------------------------------------------------
- * Configuration
+ * Configuration (loaded from settings.yaml via loadSettings)
  * --------------------------------------------------
  */
 
-const CONFIG = {
+let CONFIG = {
   // Include H2 entries beneath each H1.
   includeH2: true,
 
@@ -40,6 +41,18 @@ const CONFIG = {
 
   // Custom Pandoc style applied to the index title.
   indexTitleStyle: "IndexTitle",
+};
+
+let INDEX_TABLE = {
+  serialWidth: 8,
+  titleWidth: 61,
+  pageWidth: 9,
+
+  alignment: {
+    serial: "center",
+    title: "left",
+    page: "center",
+  },
 };
 
 
@@ -195,18 +208,6 @@ function formatTitle(title, width = null) {
  * Markdown generation
  * --------------------------------------------------
  */
-
-const INDEX_TABLE = {
-  serialWidth: 8,
-  titleWidth: 61,
-  pageWidth: 9,
-
-  alignment: {
-    serial: "center",
-    title: "left",
-    page: "center",
-  },
-};
 
 function generateIndexMarkdown(chapters) {
   const {
@@ -383,6 +384,31 @@ function generateIndexMarkdown(chapters) {
 
 async function main() {
   const root = process.cwd();
+
+  // Load settings from config
+  const settings = loadSettings(root);
+
+  // Populate CONFIG from settings
+  CONFIG = {
+    ...CONFIG,
+    includeH2: settings.indexIncludeH2,
+    includeH2PageNumbers: settings.indexIncludeH2PageNumbers,
+    includeH2Numbering: settings.indexIncludeH2Numbering,
+    uppercaseTitles: settings.indexUppercaseTitles,
+    indexTitle: settings.indexTitle,
+  };
+
+  // Populate INDEX_TABLE from settings
+  INDEX_TABLE = {
+    serialWidth: settings.indexTableWidths.serialWidth,
+    titleWidth: settings.indexTableWidths.titleWidth,
+    pageWidth: settings.indexTableWidths.pageWidth,
+    alignment: {
+      serial: settings.indexTableAlignment.serial,
+      title: settings.indexTableAlignment.title,
+      page: settings.indexTableAlignment.page,
+    },
+  };
 
   const pdfPath = path.join(
     root,

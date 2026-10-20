@@ -7,6 +7,8 @@ import {
   DEFAULT_SETTINGS,
   SUPPORTED_REFERENCE_FORMATS,
   SUPPORTED_TABLE_NUMBERING,
+  SUPPORTED_ALIGNMENTS,
+  SUPPORTED_PAGE_PARITY,
   REFERENCE_FILES,
   SETTINGS_FILE,
 } from "./default-settings.js";
@@ -70,6 +72,10 @@ export function loadSettings(projectRoot) {
         table: { ...DEFAULT_SETTINGS.table, ...(parsed.table || {}) },
         heading: { ...DEFAULT_SETTINGS.heading, ...(parsed.heading || {}),
           numbering: { ...DEFAULT_SETTINGS.heading.numbering, ...(parsed.heading?.numbering || {}) } },
+        index: { ...DEFAULT_SETTINGS.index, ...(parsed.index || {}),
+          table: { ...DEFAULT_SETTINGS.index.table, ...(parsed.index?.table || {}) } },
+        pdf: { ...DEFAULT_SETTINGS.pdf, ...(parsed.pdf || {}),
+          combine: { ...DEFAULT_SETTINGS.pdf.combine, ...(parsed.pdf?.combine || {}) } },
       };
 
       // Validate reference value from parsed (not merged) to detect missing key
@@ -179,6 +185,148 @@ export function loadSettings(projectRoot) {
           }
         }
       }
+
+      // Validate index settings
+      const indexValue = parsed.index;
+      if (indexValue !== undefined && indexValue !== null) {
+        if (typeof indexValue !== "object" || Array.isArray(indexValue)) {
+          throw new Error(
+            `Invalid 'index' in ${SETTINGS_FILE}: expected object, got ${typeof indexValue}`
+          );
+        }
+        // Validate boolean flags
+        for (const flag of ["includeH2", "includeH2PageNumbers", "includeH2Numbering", "uppercaseTitles"]) {
+          const flagValue = indexValue[flag];
+          if (flagValue !== undefined) {
+            if (typeof flagValue !== "boolean") {
+              console.info(
+                `Invalid 'index.${flag}' in ${SETTINGS_FILE}: expected boolean, got ${typeof flagValue}. Using built-in default: ${DEFAULT_SETTINGS.index[flag]}`
+              );
+              settings.index[flag] = DEFAULT_SETTINGS.index[flag];
+            } else {
+              settings.index[flag] = flagValue;
+            }
+          }
+        }
+        // Validate index.title
+        const titleValue = indexValue.title;
+        if (titleValue !== undefined) {
+          if (typeof titleValue !== "string") {
+            throw new Error(
+              `Invalid 'index.title' in ${SETTINGS_FILE}: expected string, got ${typeof titleValue}`
+            );
+          }
+          const trimmedTitle = titleValue.trim();
+          if (trimmedTitle === "") {
+            console.info(
+              `'index.title' is empty or whitespace in ${SETTINGS_FILE}. Using built-in default: index.title="${DEFAULT_SETTINGS.index.title}"`
+            );
+            settings.index.title = DEFAULT_SETTINGS.index.title;
+          } else {
+            settings.index.title = titleValue;
+          }
+        }
+        // Validate index.table
+        const indexTableValue = indexValue.table;
+        if (indexTableValue !== undefined && indexTableValue !== null) {
+          if (typeof indexTableValue !== "object" || Array.isArray(indexTableValue)) {
+            throw new Error(
+              `Invalid 'index.table' in ${SETTINGS_FILE}: expected object, got ${typeof indexTableValue}`
+            );
+          }
+          // Validate table widths
+          for (const width of ["serialWidth", "titleWidth", "pageWidth"]) {
+            const widthValue = indexTableValue[width];
+            if (widthValue !== undefined) {
+              if (typeof widthValue !== "number" || !Number.isInteger(widthValue) || widthValue <= 0) {
+                console.info(
+                  `Invalid 'index.table.${width}' in ${SETTINGS_FILE}: expected positive integer, got ${widthValue}. Using built-in default: ${DEFAULT_SETTINGS.index.table[width]}`
+                );
+                settings.index.table[width] = DEFAULT_SETTINGS.index.table[width];
+              } else {
+                settings.index.table[width] = widthValue;
+              }
+            }
+          }
+          // Validate alignment values
+          const alignmentValue = indexTableValue.alignment;
+          if (alignmentValue !== undefined && alignmentValue !== null) {
+            if (typeof alignmentValue !== "object" || Array.isArray(alignmentValue)) {
+              throw new Error(
+                `Invalid 'index.table.alignment' in ${SETTINGS_FILE}: expected object, got ${typeof alignmentValue}`
+              );
+            }
+            for (const alignKey of ["serial", "title", "page"]) {
+              const alignValue = alignmentValue[alignKey];
+              if (alignValue !== undefined) {
+                if (typeof alignValue !== "string") {
+                  console.info(
+                    `Invalid 'index.table.alignment.${alignKey}' in ${SETTINGS_FILE}: expected string, got ${typeof alignValue}. Using built-in default: ${DEFAULT_SETTINGS.index.table.alignment[alignKey]}`
+                  );
+                  settings.index.table.alignment[alignKey] = DEFAULT_SETTINGS.index.table.alignment[alignKey];
+                } else if (!SUPPORTED_ALIGNMENTS.includes(alignValue)) {
+                  console.info(
+                    `Invalid 'index.table.alignment.${alignKey}' value in ${SETTINGS_FILE}: '${alignValue}'. Supported values: ${SUPPORTED_ALIGNMENTS.join(", ")}. Using built-in default: ${DEFAULT_SETTINGS.index.table.alignment[alignKey]}`
+                  );
+                  settings.index.table.alignment[alignKey] = DEFAULT_SETTINGS.index.table.alignment[alignKey];
+                } else {
+                  settings.index.table.alignment[alignKey] = alignValue;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // Validate pdf.combine settings
+      const pdfValue = parsed.pdf;
+      if (pdfValue !== undefined && pdfValue !== null) {
+        if (typeof pdfValue !== "object" || Array.isArray(pdfValue)) {
+          throw new Error(
+            `Invalid 'pdf' in ${SETTINGS_FILE}: expected object, got ${typeof pdfValue}`
+          );
+        }
+        const combineValue = pdfValue.combine;
+        if (combineValue !== undefined && combineValue !== null) {
+          if (typeof combineValue !== "object" || Array.isArray(combineValue)) {
+            throw new Error(
+              `Invalid 'pdf.combine' in ${SETTINGS_FILE}: expected object, got ${typeof combineValue}`
+            );
+          }
+          // Validate rightHandSections
+          const rhsValue = combineValue.rightHandSections;
+          if (rhsValue !== undefined) {
+            if (!Array.isArray(rhsValue)) {
+              throw new Error(
+                `Invalid 'pdf.combine.rightHandSections' in ${SETTINGS_FILE}: expected array, got ${typeof rhsValue}`
+              );
+            }
+            if (!rhsValue.every(item => typeof item === "string")) {
+              throw new Error(
+                `Invalid 'pdf.combine.rightHandSections' in ${SETTINGS_FILE}: all items must be strings`
+              );
+            }
+            settings.pdf.combine.rightHandSections = rhsValue;
+          }
+          // Validate rightHandPageParity
+          const parityValue = combineValue.rightHandPageParity;
+          if (parityValue !== undefined) {
+            if (typeof parityValue !== "string") {
+              throw new Error(
+                `Invalid 'pdf.combine.rightHandPageParity' in ${SETTINGS_FILE}: expected string, got ${typeof parityValue}`
+              );
+            }
+            if (!SUPPORTED_PAGE_PARITY.includes(parityValue)) {
+              console.info(
+                `Invalid 'pdf.combine.rightHandPageParity' value in ${SETTINGS_FILE}: '${parityValue}'. Supported values: ${SUPPORTED_PAGE_PARITY.join(", ")}. Using built-in default: ${DEFAULT_SETTINGS.pdf.combine.rightHandPageParity}`
+              );
+              settings.pdf.combine.rightHandPageParity = DEFAULT_SETTINGS.pdf.combine.rightHandPageParity;
+            } else {
+              settings.pdf.combine.rightHandPageParity = parityValue;
+            }
+          }
+        }
+      }
     }
   }
 
@@ -213,5 +361,22 @@ export function loadSettings(projectRoot) {
     imageLabel: settings.image.label,
     tableNumbering: settings.table.numbering,
     headingNumbering: settings.heading.numbering,
+    indexIncludeH2: settings.index.includeH2,
+    indexIncludeH2PageNumbers: settings.index.includeH2PageNumbers,
+    indexIncludeH2Numbering: settings.index.includeH2Numbering,
+    indexUppercaseTitles: settings.index.uppercaseTitles,
+    indexTitle: settings.index.title,
+    indexTableWidths: {
+      serialWidth: settings.index.table.serialWidth,
+      titleWidth: settings.index.table.titleWidth,
+      pageWidth: settings.index.table.pageWidth,
+    },
+    indexTableAlignment: {
+      serial: settings.index.table.alignment.serial,
+      title: settings.index.table.alignment.title,
+      page: settings.index.table.alignment.page,
+    },
+    pdfRightHandSections: settings.pdf.combine.rightHandSections,
+    pdfRightHandPageParity: settings.pdf.combine.rightHandPageParity,
   };
 }
