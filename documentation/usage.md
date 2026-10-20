@@ -34,7 +34,7 @@ npm run build
 
 This generates the Index and report content as editable ODT documents and PDFs in `output/`.
 
-The Index includes heading 2 entries and their page numbers by default. This can be configured in scripts/extract-index.js.
+The Index includes heading 2 entries and their page numbers by default. See the [Configuration](#configuration) section for available options.
 
 ## Combine PDFs
 
@@ -61,7 +61,7 @@ This produces:
 output/final_report.pdf
 ```
 
-The PDF combiner can automatically insert blank pages when configured sections need to start on a right-hand page. This behavior can be customized in `combine_pdfs.js`.
+The PDF combiner can automatically insert blank pages when configured sections need to start on a right-hand page. See the [Configuration](#configuration) section for available options.
 
 ## Finalize
 
@@ -125,13 +125,75 @@ The Index uses a separate template:
 reference/index-reference.odt
 ```
 
-## Customize Report Generation
+## Configuration
 
-Report Kit's build scripts define which transformations are applied to the Markdown.
+All report generation behavior is controlled through `config/settings.yaml`. This file provides a single, centralized location for configuration without requiring script modifications.
 
-For example, figure and table numbering with cross-references is handled by Pandoc. Table IDs from `Table: Caption {#tbl:id}` captions are assigned through `filters/table-identifiers.lua`, and the output styling is adjusted in `scripts/format-table-numbering.js` (Roman vs Arabic) and `scripts/format-figure-labels.js` (`Figure` vs `Fig.`). These can be adjusted if different numbering behavior is required.
+### Complete Example
 
----
+```yaml
+reference: ieee
+
+image:
+  label: "Fig."
+
+table:
+  numbering: roman
+
+heading:
+  numbering:
+    h1: false
+    h2: false
+    h3: false
+
+index:
+  includeH2: true
+  includeH2PageNumbers: true
+  includeH2Numbering: true
+  uppercaseTitles: false
+  title: "Table of Contents"
+  table:
+    serialWidth: 8
+    titleWidth: 61
+    pageWidth: 9
+    alignment:
+      serial: center
+      title: left
+      page: center
+
+pdf:
+  combine:
+    rightHandSections:
+      - "02_index.pdf"
+      - "03_content.pdf"
+    rightHandPageParity: odd
+```
+
+The example above shows the project's default configuration. Boolean options accept `true` or `false`.
+
+### Setting Reference
+
+| Setting | Description | Values |
+| --------- | ------------- | -------- |
+| `reference` | Selects the report reference template | `ieee`, `default` |
+| `image.label` | Controls the figure caption label (e.g., `Fig.` or `Figure`) | string |
+| `table.numbering` | Controls table numbering format | `roman`, `arabic` |
+| `heading.numbering.h1` | Enable/disable H1 automatic numbering | `true`, `false` |
+| `heading.numbering.h2` | Enable/disable H2 automatic numbering | `true`, `false` |
+| `heading.numbering.h3` | Enable/disable H3 automatic numbering | `true`, `false` |
+| `index.includeH2` | Include H2 headings in the generated Index | `true`, `false` |
+| `index.includeH2PageNumbers` | Show page numbers for H2 entries in Index | `true`, `false` |
+| `index.includeH2Numbering` | Include heading numbers in H2 Index entries (e.g., `2.2 Background`) | `true`, `false` |
+| `index.uppercaseTitles` | Convert Index entry titles to uppercase | `true`, `false` |
+| `index.title` | Sets the displayed Index title | string |
+| `index.table.serialWidth` | Width of serial number column in Index table | positive integer |
+| `index.table.titleWidth` | Width of title column in Index table | positive integer |
+| `index.table.pageWidth` | Width of page number column in Index table | positive integer |
+| `index.table.alignment.serial` | Alignment for serial column | `left`, `center`, `right` |
+| `index.table.alignment.title` | Alignment for title column | `left`, `center`, `right` |
+| `index.table.alignment.page` | Alignment for page column | `left`, `center`, `right` |
+| `pdf.combine.rightHandSections` | List of PDF filenames that must start on a right-hand page | array of strings |
+| `pdf.combine.rightHandPageParity` | Page parity considered as "right-hand" | `odd`, `even` |
 
 ## IEEE Paper Support
 

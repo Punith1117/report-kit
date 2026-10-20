@@ -10,7 +10,7 @@ This project uses Pandoc-compatible Markdown.
 ### Heading 3
 ```
 
-H1, H2, and H3 headings are automatically numbered through Lua filters.
+H1, H2, and H3 headings can be automatically numbered through Lua filters. Numbering for each level is controlled independently in `config/settings.yaml` via `heading.numbering.h1`, `heading.numbering.h2`, and `heading.numbering.h3` (set to `true` to enable, `false` to disable). By default, all levels are disabled.
 
 ---
 
@@ -201,7 +201,7 @@ The specifications are summarized in Table [component specifications](#tbl:compo
 * The ID goes at the end of the `Table:` caption line, after a space.
 * IDs must be unique across the report.
 * Tables without an ID are still numbered, they just cannot be referenced.
-* Pandoc numbers tables automatically and fills in the number at each reference. Tables use Roman numerals by default (`Table I`, `Table II`, ...). To use Arabic numbers instead (`Table 1`, `Table 2`, ...), set `TABLE_NUMBERING = "arabic"` in `scripts/format-table-numbering.js`.
+* Pandoc numbers tables automatically and fills in the number at each reference. Tables use Roman numerals by default (`Table I`, `Table II`, ...). To use Arabic numbers instead (`Table 1`, `Table 2`, ...), set `table.numbering: arabic` in `config/settings.yaml`.
 
 ---
 
