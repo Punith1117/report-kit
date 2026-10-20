@@ -12,17 +12,19 @@ The project was tested under normal room temperature conditions as well as eleva
 
 The following observations were recorded during the testing of the system:
 
--------- -------------------------------- --------------- -------------------------
- Sl. No   Temperature Condition            Buzzer Status  System Response
--------- -------------------------------- --------------- -------------------------
- 1        Temperature below threshold      OFF            Normal monitoring
- 
- 2        Temperature equal to threshold   OFF            Continuous monitoring
- 
- 3        Temperature above threshold      ON             Alert generated
- 
- 4        Sensor disconnected              OFF            Error message displayed
--------- -------------------------------- --------------- -------------------------
+<!-- col-w: 15 35 20 30| align: left left center left -->
+
+--------------- ----------------------------------- -------------------- ------------------------------
+Sl. No          Temperature Condition                Buzzer Status       System Response               
+--------------- ----------------------------------- -------------------- ------------------------------
+1               Temperature below threshold          OFF                 Normal monitoring             
+
+2               Temperature equal to threshold       OFF                 Continuous monitoring         
+
+3               Temperature above threshold          ON                  Alert generated               
+
+4               Sensor disconnected                  OFF                 Error message displayed       
+--------------- ----------------------------------- -------------------- ------------------------------
 
 Table: Result Observations
 

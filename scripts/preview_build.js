@@ -7,10 +7,10 @@ import { promisify } from "node:util";
 const execFileAsync = promisify(execFile);
 
 async function run(command, args, cwd) {
-  await execFileAsync(command, args, {
-    cwd,
-    stdio: "inherit"
-  });
+  const { stdout, stderr } = await execFileAsync(command, args, { cwd });
+
+  if (stdout) process.stdout.write(stdout);
+  if (stderr) process.stderr.write(stderr);
 }
 
 async function main() {
@@ -48,7 +48,7 @@ async function main() {
     );
   }
 
-  // 1. Generate content ODT with native figure numbering and cross-references
+  // Generate content ODT with native figure numbering and cross-references
   await run("pandoc", [
     ...files,
     "-o", "output/odt/03_content.odt",
@@ -63,7 +63,7 @@ async function main() {
 
   console.log("Generated: output/odt/03_content.odt");
 
-  // 2. Format native table numbering
+  // Format native table numbering
   await run("node", [
     "scripts/format-table-numbering.js",
     "output/odt/03_content.odt"
@@ -71,7 +71,7 @@ async function main() {
 
   console.log("Table numbering formatted");
 
-  // 3. Change native figure caption labels from "Figure" to "Fig."
+  // Change native figure caption labels from "Figure" to "Fig."
   await run("node", [
     "scripts/format-figure-labels.js",
     "output/odt/03_content.odt"
@@ -79,10 +79,8 @@ async function main() {
 
   console.log("Figure labels formatted");
 
-  console.log("Figure labels formatted");
-
-  // 4. Format IEEE multi-column sections
-  //    (3-column authors, 2-column body)
+  // Format IEEE multi-column sections
+  // (3-column authors, 2-column body)
   await run("node", [
     "scripts/format-sections.js",
     "output/odt/03_content.odt",
@@ -91,7 +89,7 @@ async function main() {
 
   console.log("Content sections formatted");
 
-  // 5. Apply table borders directly to ODT XML
+  // Apply table borders directly to ODT XML
   await run("node", [
     "scripts/add-table-borders.js",
     "output/odt/03_content.odt"
@@ -101,7 +99,7 @@ async function main() {
     "Content ODT post-processing completed: Tables formatted"
   );
 
-  // 6. Convert content ODT to PDF
+  // Convert content ODT to PDF
   await run("soffice", [
     "--headless",
     "--convert-to", "pdf",

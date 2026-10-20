@@ -14,19 +14,21 @@ The hardware implementation involves interfacing the DHT22 sensor and buzzer wit
 
 ### Hardware Connections
 
--------------------------- ----------------------
-  Component                ESP32 Pin Connection
--------------------------- ----------------------
-  DHT22 VCC                3.3V
+<!-- col-w: 20 25 | align: center center -->
 
-  DHT22 DATA               GPIO4
+-------------------- -------------------------
+ Component            ESP32 Pin Connection    
+-------------------- -------------------------
+ DHT22 VCC            3.3V                    
 
-  DHT22 GND                GND
+ DHT22 DATA           GPIO4                   
 
-  Buzzer Positive          GPIO18
+ DHT22 GND            GND                     
 
-  Buzzer Negative          GND
--------------------------- ----------------------
+ Buzzer Positive      GPIO18                  
+
+ Buzzer Negative      GND                     
+-------------------- -------------------------
 
 Table: Hardware Connections {#tbl:hardware-connections}
 

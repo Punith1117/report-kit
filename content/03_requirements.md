@@ -50,19 +50,21 @@ The ESP32 microcontroller acts as the main controller of the system. The DHT22 s
 
 ## Software Requirements
 
--------- --------------------- -------------------------------------------
- Sl. No   Software              Purpose
--------- --------------------- -------------------------------------------
- 1        Arduino IDE           Writing and uploading program code
- 
- 2        Embedded C            Programming language used for coding
- 
- 3        ESP32 Board Package   Supports ESP32 programming in Arduino IDE
- 
- 4        DHT Sensor Library    Enables communication with DHT22 sensor
- 
- 5        Serial Monitor        Displays real-time temperature readings
--------- --------------------- -------------------------------------------
+<!-- col-w: 8 23 45 | align: center center center -->
+
+-------- ----------------------- ---------------------------------------------
+ Sl. No   Software                Purpose                                     
+-------- ----------------------- ---------------------------------------------
+ 1        Arduino IDE             Writing and uploading program code          
+
+ 2        Embedded C              Programming language used for coding        
+
+ 3        ESP32 Board Package     Supports ESP32 programming in Arduino IDE   
+
+ 4        DHT Sensor Library      Enables communication with DHT22 sensor     
+
+ 5        Serial Monitor          Displays real-time temperature readings     
+-------- ----------------------- ---------------------------------------------
 
 Table: Software table Requirements
 

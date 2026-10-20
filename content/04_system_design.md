@@ -24,19 +24,21 @@ The overall structure of the proposed system is shown in Fig. [system architectu
 
 ### Component Specifications
 
---------------------- -------------------- -----------------------
-  Component           Parameter            Specification
---------------------- -------------------- -----------------------
-  DHT22               Voltage              3.3V to 5V
+<!-- col-w: 19 19 29 | align: left center right -->
 
-  DHT22               Temperature Range    -40°C to 80°C
+------------------- ------------------- -----------------------------
+Component            Parameter                          Specification
+------------------- ------------------- -----------------------------
+DHT22                Voltage                               3.3V to 5V
 
-  DHT22               Humidity Range       0% to 100%
+DHT22                Temperature Range                  -40°C to 80°C
 
-  ESP32               Operating Voltage    3.3V
+DHT22                Humidity Range                        0% to 100%
 
-  ESP32               WiFi                 802.11 b/g/n
---------------------- -------------------- -----------------------
+ESP32                Operating Voltage                           3.3V
+
+ESP32                WiFi                                802.11 b/g/n
+------------------- ------------------- -----------------------------
 
 Table: Component Specifications {#tbl:component-specifications}
 

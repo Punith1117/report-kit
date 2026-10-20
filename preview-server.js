@@ -5,8 +5,14 @@ import { exec } from "node:child_process";
 
 const PORT = 3000;
 
+const FORMAT_DEBOUNCE_MS = 500;
+const BUILD_DEBOUNCE_MS = 300;
+
+let formattingRunning = false;
 let buildRunning = false;
-let buildQueued = false;
+let formattingQueued = false;
+
+let formatTimer = null;
 let buildTimer = null;
 
 const PDF_URL = "/output/pdf/03_content.pdf";
@@ -26,9 +32,62 @@ function openBrowser(url) {
   });
 }
 
+function runFormatter() {
+  if (formattingRunning || buildRunning) {
+    formattingQueued = true;
+    return;
+  }
+
+  formattingRunning = true;
+
+  console.log("Running table formatter...");
+
+  exec("npm run format:table-col", (error, stdout, stderr) => {
+    if (stdout) process.stdout.write(stdout);
+    if (stderr) process.stderr.write(stderr);
+
+    formattingRunning = false;
+
+    if (error) {
+      console.error("Table formatting failed:", error.message);
+
+      if (formattingQueued) {
+        formattingQueued = false;
+        scheduleFormatting();
+      }
+
+      return;
+    }
+
+    console.log("Table formatting completed");
+
+    // If another formatting pass was requested while formatting,
+    // settle the source files before starting the preview build.
+    if (formattingQueued) {
+      formattingQueued = false;
+      scheduleFormatting();
+      return;
+    }
+
+    scheduleBuild();
+  });
+}
+
+function scheduleFormatting() {
+  // New changes invalidate any pending preview build.
+  clearTimeout(buildTimer);
+
+  clearTimeout(formatTimer);
+
+  formatTimer = setTimeout(() => {
+    formatTimer = null;
+    runFormatter();
+  }, FORMAT_DEBOUNCE_MS);
+}
+
 function runBuild() {
-  if (buildRunning) {
-    buildQueued = true;
+  if (buildRunning || formattingRunning) {
+    formattingQueued = true;
     return;
   }
 
@@ -52,9 +111,10 @@ function runBuild() {
 
     buildRunning = false;
 
-    if (buildQueued) {
-      buildQueued = false;
-      runBuild();
+    // Preserve changes that arrived while the build was running.
+    if (formattingQueued) {
+      formattingQueued = false;
+      scheduleFormatting();
     }
   });
 }
@@ -63,8 +123,9 @@ function scheduleBuild() {
   clearTimeout(buildTimer);
 
   buildTimer = setTimeout(() => {
+    buildTimer = null;
     runBuild();
-  }, 200);
+  }, BUILD_DEBOUNCE_MS);
 }
 
 const app = express();
@@ -123,12 +184,12 @@ chokidar
   })
   .on("all", (event, path) => {
     console.log(`[WATCH ${event}] ${path}`);
-    scheduleBuild();
+    scheduleFormatting();
   });
 
 wss.on("connection", () => {
   console.log("Browser connected");
 });
 
-// Generate a fresh preview when the server starts.
-runBuild();
+// Format first, then generate the initial preview.
+scheduleFormatting();
