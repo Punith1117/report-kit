@@ -34,6 +34,18 @@ async function main() {
     .sort()
     .map(file => join("content", file));
 
+  // Build conditional heading numbering filters
+  const headingFilters = [];
+  if (settings.headingNumbering.h1) {
+    headingFilters.push("--lua-filter=filters/number-h1.lua");
+  }
+  if (settings.headingNumbering.h2) {
+    headingFilters.push("--lua-filter=filters/number-h2.lua");
+  }
+  if (settings.headingNumbering.h3) {
+    headingFilters.push("--lua-filter=filters/number-h3.lua");
+  }
+
   // Citations: only enable citeproc when both files exist,
   // so reports without a .bib keep building (manual bibliography fallback).
   const citeArgs = [];
@@ -61,6 +73,7 @@ async function main() {
     "--lua-filter=filters/authors.lua",
     "--lua-filter=filters/pagebreak.lua",
     "--lua-filter=filters/table-identifiers.lua",
+    ...headingFilters,
     "--table-caption-position=below",
     "-t", "odt+native_numbering+xrefs_number",
     ...citeArgs

@@ -68,6 +68,8 @@ export function loadSettings(projectRoot) {
         ...parsed,
         image: { ...DEFAULT_SETTINGS.image, ...(parsed.image || {}) },
         table: { ...DEFAULT_SETTINGS.table, ...(parsed.table || {}) },
+        heading: { ...DEFAULT_SETTINGS.heading, ...(parsed.heading || {}),
+          numbering: { ...DEFAULT_SETTINGS.heading.numbering, ...(parsed.heading?.numbering || {}) } },
       };
 
       // Validate reference value from parsed (not merged) to detect missing key
@@ -145,6 +147,38 @@ export function loadSettings(projectRoot) {
           }
         }
       }
+
+      // Validate heading.numbering
+      const headingValue = parsed.heading;
+      if (headingValue !== undefined && headingValue !== null) {
+        if (typeof headingValue !== "object" || Array.isArray(headingValue)) {
+          throw new Error(
+            `Invalid 'heading' in ${SETTINGS_FILE}: expected object, got ${typeof headingValue}`
+          );
+        }
+        const numberingValue = headingValue.numbering;
+        if (numberingValue !== undefined && numberingValue !== null) {
+          if (typeof numberingValue !== "object" || Array.isArray(numberingValue)) {
+            throw new Error(
+              `Invalid 'heading.numbering' in ${SETTINGS_FILE}: expected object, got ${typeof numberingValue}`
+            );
+          }
+          // Validate each heading level (h1, h2, h3)
+          for (const level of ["h1", "h2", "h3"]) {
+            const levelValue = numberingValue[level];
+            if (levelValue !== undefined) {
+              if (typeof levelValue !== "boolean") {
+                console.info(
+                  `Invalid 'heading.numbering.${level}' in ${SETTINGS_FILE}: expected boolean, got ${typeof levelValue}. Using built-in default: ${DEFAULT_SETTINGS.heading.numbering[level]}`
+                );
+                settings.heading.numbering[level] = DEFAULT_SETTINGS.heading.numbering[level];
+              } else {
+                settings.heading.numbering[level] = levelValue;
+              }
+            }
+          }
+        }
+      }
     }
   }
 
@@ -178,5 +212,6 @@ export function loadSettings(projectRoot) {
     referenceRelativePath: relativeRefPath,
     imageLabel: settings.image.label,
     tableNumbering: settings.table.numbering,
+    headingNumbering: settings.heading.numbering,
   };
 }

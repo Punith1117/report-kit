@@ -8,6 +8,13 @@ export const DEFAULT_SETTINGS = {
   table: {
     numbering: "roman",
   },
+  heading: {
+    numbering: {
+      h1: false,
+      h2: false,
+      h3: false,
+    },
+  },
 };
 
 export const SUPPORTED_REFERENCE_FORMATS = ["ieee", "default"];
