@@ -12,18 +12,21 @@ import {
 
 const INPUT_FILE = process.argv[2];
 const OUTPUT_FILE = process.argv[3] || INPUT_FILE;
+const FIGURE_LABEL = process.argv[4] || "Fig.";
 
 if (!INPUT_FILE) {
   console.error(
-    "Usage: node scripts/format-figure-labels.js <input.odt> [output.odt]"
+    "Usage: node scripts/format-figure-labels.js <input.odt> [output.odt] [figure-label]"
   );
   process.exit(1);
 }
 
-// Native Pandoc ODT figure captions use "Figure".
-// Change only this literal label.
-// The ODF sequence itself remains untouched.
-const FIGURE_LABEL = "Fig.";
+// Validate figure label is not empty or whitespace-only
+const trimmedLabel = FIGURE_LABEL.trim();
+if (trimmedLabel === "") {
+  console.error("Error: figure label cannot be empty or whitespace-only");
+  process.exit(1);
+}
 
 // ------------------------------------------------------------
 // Namespaces

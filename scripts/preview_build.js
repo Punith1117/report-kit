@@ -71,15 +71,19 @@ async function main() {
   // Format native table numbering
   await run("node", [
     "scripts/format-table-numbering.js",
-    "output/odt/03_content.odt"
+    "output/odt/03_content.odt",
+    "output/odt/03_content.odt",
+    settings.tableNumbering
   ], root);
 
   console.log("Table numbering formatted");
 
-  // Change native figure caption labels from "Figure" to "Fig."
+  // Change native figure caption labels from "Figure" to configured label
   await run("node", [
     "scripts/format-figure-labels.js",
-    "output/odt/03_content.odt"
+    "output/odt/03_content.odt",
+    "",
+    settings.imageLabel
   ], root);
 
   console.log("Figure labels formatted");

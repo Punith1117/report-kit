@@ -2,9 +2,16 @@
 
 export const DEFAULT_SETTINGS = {
   reference: "ieee",
+  image: {
+    label: "Fig.",
+  },
+  table: {
+    numbering: "roman",
+  },
 };
 
 export const SUPPORTED_REFERENCE_FORMATS = ["ieee", "default"];
+export const SUPPORTED_TABLE_NUMBERING = ["roman", "arabic"];
 
 // Map configuration values to actual reference document files
 // Per task specification: ieee -> reference/ieee.odt, default -> reference/default.odt

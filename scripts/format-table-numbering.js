@@ -12,6 +12,7 @@ import {
 
 const INPUT_FILE = process.argv[2];
 const OUTPUT_FILE = process.argv[3] || INPUT_FILE;
+const TABLE_NUMBERING = process.argv[4] || "roman";
 
 /*
  * Supported modes:
@@ -23,15 +24,6 @@ const OUTPUT_FILE = process.argv[3] || INPUT_FILE;
  *
  * Figures continue to use native Arabic numbering.
  */
-const TABLE_NUMBERING = "roman";
-
-if (!INPUT_FILE) {
-  console.error(
-    "Usage: node scripts/format-table-numbering.js <input.odt> [output.odt]"
-  );
-  process.exit(1);
-}
-
 // ------------------------------------------------------------
 // Namespaces
 // ------------------------------------------------------------
@@ -44,10 +36,15 @@ const NS = {
     "urn:oasis:names:tc:opendocument:xmlns:style:1.0",
 };
 
-// ------------------------------------------------------------
-// Numbering formats
-// ------------------------------------------------------------
 
+if (!INPUT_FILE) {
+  console.error(
+    "Usage: node scripts/format-table-numbering.js <input.odt> [output.odt] [table-numbering]"
+  );
+  process.exit(1);
+}
+
+// Validate table numbering mode
 const NUMBER_FORMATS = {
   roman: "I",
   arabic: "1",

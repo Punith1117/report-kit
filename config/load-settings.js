@@ -6,6 +6,7 @@ import { parse } from "yaml";
 import {
   DEFAULT_SETTINGS,
   SUPPORTED_REFERENCE_FORMATS,
+  SUPPORTED_TABLE_NUMBERING,
   REFERENCE_FILES,
   SETTINGS_FILE,
 } from "./default-settings.js";
@@ -60,8 +61,14 @@ export function loadSettings(projectRoot) {
     } else {
       // Check if reference key is explicitly provided
       const hasReferenceKey = Object.prototype.hasOwnProperty.call(parsed, "reference");
-      // Merge with defaults
-      settings = { ...DEFAULT_SETTINGS, ...parsed };
+      
+      // Merge with defaults (deep merge for nested objects)
+      settings = {
+        ...DEFAULT_SETTINGS,
+        ...parsed,
+        image: { ...DEFAULT_SETTINGS.image, ...(parsed.image || {}) },
+        table: { ...DEFAULT_SETTINGS.table, ...(parsed.table || {}) },
+      };
 
       // Validate reference value from parsed (not merged) to detect missing key
       const referenceValue = parsed.reference;
@@ -84,6 +91,59 @@ export function loadSettings(projectRoot) {
         throw new Error(
           `Invalid 'reference' value in ${SETTINGS_FILE}: '${referenceValue}'. Supported values: ${SUPPORTED_REFERENCE_FORMATS.join(", ")}`
         );
+      }
+
+      // Validate image.label
+      const imageValue = parsed.image;
+      if (imageValue !== undefined && imageValue !== null) {
+        if (typeof imageValue !== "object" || Array.isArray(imageValue)) {
+          throw new Error(
+            `Invalid 'image' in ${SETTINGS_FILE}: expected object, got ${typeof imageValue}`
+          );
+        }
+        const labelValue = imageValue.label;
+        if (labelValue !== undefined) {
+          if (typeof labelValue !== "string") {
+            throw new Error(
+              `Invalid 'image.label' in ${SETTINGS_FILE}: expected string, got ${typeof labelValue}`
+            );
+          }
+          const trimmedLabel = labelValue.trim();
+          if (trimmedLabel === "") {
+            console.info(
+              `'image.label' is empty or whitespace in ${SETTINGS_FILE}. Using built-in default: image.label="${DEFAULT_SETTINGS.image.label}"`
+            );
+            settings.image.label = DEFAULT_SETTINGS.image.label;
+          } else {
+            settings.image.label = labelValue;
+          }
+        }
+      }
+
+      // Validate table.numbering
+      const tableValue = parsed.table;
+      if (tableValue !== undefined && tableValue !== null) {
+        if (typeof tableValue !== "object" || Array.isArray(tableValue)) {
+          throw new Error(
+            `Invalid 'table' in ${SETTINGS_FILE}: expected object, got ${typeof tableValue}`
+          );
+        }
+        const numberingValue = tableValue.numbering;
+        if (numberingValue !== undefined) {
+          if (typeof numberingValue !== "string") {
+            throw new Error(
+              `Invalid 'table.numbering' in ${SETTINGS_FILE}: expected string, got ${typeof numberingValue}`
+            );
+          }
+          if (!SUPPORTED_TABLE_NUMBERING.includes(numberingValue)) {
+            console.info(
+              `Invalid 'table.numbering' value in ${SETTINGS_FILE}: '${numberingValue}'. Supported values: ${SUPPORTED_TABLE_NUMBERING.join(", ")}. Using built-in default: table.numbering="${DEFAULT_SETTINGS.table.numbering}"`
+            );
+            settings.table.numbering = DEFAULT_SETTINGS.table.numbering;
+          } else {
+            settings.table.numbering = numberingValue;
+          }
+        }
       }
     }
   }
@@ -116,5 +176,7 @@ export function loadSettings(projectRoot) {
     reference: settings.reference,
     referencePath: absoluteRefPath,
     referenceRelativePath: relativeRefPath,
+    imageLabel: settings.image.label,
+    tableNumbering: settings.table.numbering,
   };
 }

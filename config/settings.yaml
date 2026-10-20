@@ -1,1 +1,7 @@
 reference: ieee
+
+image:
+  label: "Fig."
+
+table:
+  numbering: roman
