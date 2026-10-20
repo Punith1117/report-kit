@@ -3,6 +3,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
+import { loadSettings } from "../config/load-settings.js";
 
 const execFileAsync = promisify(execFile);
 
@@ -15,6 +16,10 @@ async function run(command, args, cwd) {
 
 async function main() {
   const root = process.cwd();
+
+  // Load and validate settings before any build side effects
+  const settings = loadSettings(root);
+  console.log(`Using reference format: ${settings.reference} (${settings.referenceRelativePath})`);
 
   const odtDir = join(root, "output", "odt");
   const pdfDir = join(root, "output", "pdf");
@@ -52,7 +57,7 @@ async function main() {
   await run("pandoc", [
     ...files,
     "-o", "output/odt/03_content.odt",
-    "--reference-doc=reference/content-reference.odt",
+    `--reference-doc=${settings.referenceRelativePath}`,
     "--lua-filter=filters/authors.lua",
     "--lua-filter=filters/pagebreak.lua",
     "--lua-filter=filters/table-identifiers.lua",
@@ -84,7 +89,7 @@ async function main() {
   await run("node", [
     "scripts/format-sections.js",
     "output/odt/03_content.odt",
-    "reference/content-reference.odt"
+    settings.referenceRelativePath
   ], root);
 
   console.log("Content sections formatted");

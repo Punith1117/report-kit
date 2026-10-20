@@ -2,6 +2,7 @@ import { mkdir, readdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { spawn } from "node:child_process";
+import { loadSettings } from "../config/load-settings.js";
 
 function run(command, args) {
   return new Promise((resolve, reject) => {
@@ -25,6 +26,10 @@ function run(command, args) {
 
 async function main() {
   const root = process.cwd();
+
+  // Load and validate settings before any build side effects
+  const settings = loadSettings(root);
+  console.log(`Using reference format: ${settings.reference} (${settings.referenceRelativePath})`);
 
   // Format Markdown table columns before building
   await run("npm", ["run", "format:table-col"]);
@@ -66,7 +71,7 @@ async function main() {
   await run("pandoc", [
     ...files,
     "-o", "output/odt/03_content.odt",
-    "--reference-doc=reference/content-reference.odt",
+    `--reference-doc=${settings.referenceRelativePath}`,
 
     "--lua-filter=filters/authors.lua",
     "--lua-filter=filters/pagebreak.lua",
@@ -102,7 +107,7 @@ async function main() {
   await run("node", [
     "scripts/format-sections.js",
     "output/odt/03_content.odt",
-    "reference/content-reference.odt",
+    settings.referenceRelativePath,
   ]);
 
   console.log("Content sections formatted");
@@ -132,7 +137,7 @@ async function main() {
 
   console.log("Generated: index.md");
 
-  // Generate index ODT
+  // Generate index ODT (index reference document is NOT configurable)
   await run("pandoc", [
     "output/md/index.md",
     "-o", "output/odt/02_index.odt",
