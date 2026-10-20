@@ -157,6 +157,33 @@ Table: Software Requirements
 
 Column widths can be adjusted by changing the width of the column separators.
 
+### Table Column Width and Alignment Control
+
+For precise control over column widths and content alignment, add a configuration comment immediately before the table:
+
+```md
+<!-- col-w: 8 23 45 | align: center center center -->
+
+-------- ----------------------- ---------------------------------------------
+ Sl. No   Software                Purpose
+-------- ----------------------- ---------------------------------------------
+ 1        Arduino IDE             Writing and uploading program code
+
+ 2        Embedded C              Programming language used for coding
+-------- ----------------------- ---------------------------------------------
+```
+
+**Syntax:**
+
+```md
+<!-- col-w: WIDTH1 WIDTH2 WIDTH3 ... | align: ALIGN1 ALIGN2 ALIGN3 ... -->
+```
+
+* **col-w**: Space-separated integers defining each column's width in characters.
+* **align**: Space-separated alignment keywords — `left`, `center`, or `right` - one per column. Must match the number of widths.
+
+The formatter (`scripts/format-table-col.js`) validates the table structure, rewrites the separator lines to match the specified widths, and pads each cell according to its alignment. It runs automatically during `npm run build` and `npm run preview`.
+
 ### Tables with cross-references
 
 To reference a table from the text, add an ID with the `tbl:` prefix at the end of the caption line:
@@ -276,9 +303,9 @@ The temperature is represented by $T$ and the threshold is represented by $T_{\m
 ## 11. IEEE Paper Format (Title & Multi-Column Authors)
 
 When using an IEEE conference template, Report Kit automatically formats the paper:
-- **Title and Subtitle**: Single column (full page width)
-- **Author Affiliations**: 3 columns side-by-side (`Sect1`)
-- **Paper Body**: 2 columns (`Sect2`)
+* **Title and Subtitle**: Single column (full page width)
+* **Author Affiliations**: 3 columns side-by-side (`Sect1`)
+* **Paper Body**: 2 columns (`Sect2`)
 
 ### Option A: YAML Frontmatter (Recommended)
 

@@ -75,6 +75,31 @@ This is a convenience command that runs both: `npm run build`, `npm run combine`
 
 Use it when you want to produce the final report without running the individual build and combination steps separately.
 
+## Generate Tables from Pipe-Delimited Input
+
+Create markdown tables with automatic column width and alignment formatting from a simple pipe-delimited text file:
+
+```bash
+npm run create:table
+```
+
+**Input format** (`new-table.txt`):
+
+```text
+Component | Specification
+DHT22 | 3.3V to 5V
+DHT22 | -40°C to 80°C
+DHT22 | 0% to 100%
+ESP32 | 3.3V
+ESP32 | 802.11 b/g/n
+```
+
+**Output** (`output/md/table.md`):
+
+A markdown table with a `<!-- col-w: ... | align: ... -->` comment and properly formatted separators. The script calculates optimal column widths from the content and centers all columns by default.
+
+Move it into your report content and edit the formatting comment as needed.
+
 ## Customize Formatting
 
 The report's visual formatting is controlled by the reference document:
