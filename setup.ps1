@@ -48,7 +48,7 @@ $dependencies = @(
 
 $MinimumVersions = @{
     Pandoc = [version]"3.4"
-    Node.js = [version]"22.0.0"
+    "Node.js"= [version]"22.0.0"
 }
 
 # ----------------------------------------
