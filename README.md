@@ -8,6 +8,8 @@ No formatting by hand. No cloud service. No special writing application.
 
 *Keep content and design separate. Automate the repetitive work. Produce consistent reports every time.*
 
+![Report Kit live preview showing Neovim and the browser side by side](assets/images/report-kit-preview.png)
+
 ---
 
 ## Features
