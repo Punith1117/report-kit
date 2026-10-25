@@ -62,4 +62,30 @@ If the LibreOffice installation through `winget` is too slow, you can install Li
 
 ---
 
+## macOS
+
+The macOS setup script uses Homebrew to install missing dependencies and configure command-line access.
+
+First, ensure `Homebrew` is installed.
+
+Run the setup script:
+
+```zsh
+./setup.mac.sh
+```
+
+The script checks for:
+
+* Node.js 22 or later
+* Pandoc 3.4 or later
+* LibreOffice
+
+It installs missing dependencies through Homebrew and configures command-line access through PATH in ~/.zprofile.
+
+After the required tools are available, install the project's Node.js dependencies:
+
+```
+npm install
+```
+
 Now, you can use the software by following the [Usage Guide](usage.md).

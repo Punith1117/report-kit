@@ -191,7 +191,7 @@ Citations use `references.bib` with the IEEE numeric style in `reference/ieee.cs
 
 ## Documentation
 
-- [Installation](documentation/installation.md) — setup instructions for Linux and Windows
+- [Installation](documentation/installation.md) — setup instructions for Linux, Windows and MacOS
 - [Usage](documentation/usage.md) — editing, building, previewing, and generating reports
 - [Syntax Guide](documentation/syntax-guide.md) — Markdown conventions and supported report syntax
 
