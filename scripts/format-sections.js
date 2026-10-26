@@ -226,7 +226,12 @@ function ensureSectionStyles(document, automaticStyles) {
     const authorNorm = document.createElementNS(NS.STYLE, "style:style");
     setAttributeNS(authorNorm, NS.STYLE, "style:name", "AuthorNormal");
     setAttributeNS(authorNorm, NS.STYLE, "style:family", "paragraph");
-    setAttributeNS(authorNorm, NS.STYLE, "style:parent-style-name", "Author");
+    setAttributeNS(
+      authorNorm,
+      NS.STYLE,
+      "style:parent-style-name",
+      "Author"
+    );
 
     const paraProps = document.createElementNS(
       NS.STYLE,
@@ -242,7 +247,47 @@ function ensureSectionStyles(document, automaticStyles) {
     automaticStyles.appendChild(authorNorm);
   }
 
-  // 6. Pagebreak & Columnbreak support
+  // 6. AuthorCentered: single author centered across the page
+  if (!getStyleByName(automaticStyles, "AuthorCentered")) {
+    const authorCentered = document.createElementNS(
+      NS.STYLE,
+      "style:style"
+    );
+    setAttributeNS(
+      authorCentered,
+      NS.STYLE,
+      "style:name",
+      "AuthorCentered"
+    );
+    setAttributeNS(
+      authorCentered,
+      NS.STYLE,
+      "style:family",
+      "paragraph"
+    );
+    setAttributeNS(
+      authorCentered,
+      NS.STYLE,
+      "style:parent-style-name",
+      "Author"
+    );
+
+    const paraProps = document.createElementNS(
+      NS.STYLE,
+      "style:paragraph-properties"
+    );
+    setAttributeNS(paraProps, NS.FO, "fo:text-align", "center");
+    setAttributeNS(paraProps, NS.FO, "fo:margin-top", "0in");
+    setAttributeNS(paraProps, NS.FO, "fo:margin-bottom", "0.028in");
+    setAttributeNS(paraProps, NS.STYLE, "style:contextual-spacing", "false");
+    setAttributeNS(paraProps, NS.FO, "fo:text-indent", "0in");
+    setAttributeNS(paraProps, NS.STYLE, "style:auto-text-indent", "false");
+
+    authorCentered.appendChild(paraProps);
+    automaticStyles.appendChild(authorCentered);
+  }
+
+  // 7. Pagebreak & Columnbreak support
   if (!getStyleByName(automaticStyles, "Pagebreak")) {
     const pb = document.createElementNS(NS.STYLE, "style:style");
     setAttributeNS(pb, NS.STYLE, "style:name", "Pagebreak");
@@ -287,7 +332,10 @@ async function checkTemplateUsesSections(refPath) {
     const contentXmlFile = zip.file("content.xml");
     if (!contentXmlFile) return false;
     const xml = await contentXmlFile.async("string");
-    return xml.includes('style:name="Sect1"') || xml.includes('style:name="Sect2"');
+    return (
+      xml.includes('style:name="Sect1"') ||
+      xml.includes('style:name="Sect2"')
+    );
   } catch {
     return false;
   }
@@ -413,7 +461,10 @@ function formatDocumentSections(document) {
     while (heading.firstChild) {
       const child = heading.firstChild;
       heading.removeChild(child);
-      if (child.localName !== "bookmark-start" && child.localName !== "bookmark-end") {
+      if (
+        child.localName !== "bookmark-start" &&
+        child.localName !== "bookmark-end"
+      ) {
         titleP.appendChild(child);
       }
     }
@@ -508,6 +559,7 @@ function formatDocumentSections(document) {
     const count = authorElements.length;
 
     // Partition authors into rows according to IEEE guidelines:
+    // - 1 author: 1 centered author in Sect3
     // - 2 authors: 1 row of 2 (Sect2)
     // - 3 authors: 1 row of 3 (Sect1)
     // - 4 authors: 2 rows of 2 (Sect2, Sect2)
@@ -515,7 +567,10 @@ function formatDocumentSections(document) {
     // - 6 authors: row 1 (3 in Sect1), row 2 (3 in Sect1)
     // - 7+ authors: chunks of 3 in Sect1, remaining 2 or 4 in Sect2
     const rows = [];
-    if (count <= 3) {
+
+    if (count === 1) {
+      rows.push({ authors: authorElements, style: "Sect3" });
+    } else if (count <= 3) {
       if (count === 2) {
         rows.push({ authors: authorElements, style: "Sect2" });
       } else {
@@ -558,15 +613,23 @@ function formatDocumentSections(document) {
 
       for (let i = 0; i < rowAuthors.length; i++) {
         const el = rowAuthors[i];
-        // The first author in any row starts at Column 1 (no break).
-        // Subsequent authors in the same row break to the next column.
+
+        // A single author is centered in the full-width, one-column section.
+        // For multiple authors, preserve the existing column-break behavior.
+        const isSingleAuthor = count === 1;
         const isBreak = i > 0;
+
         setAttributeNS(
           el,
           NS.TEXT,
           "text:style-name",
-          isBreak ? "AuthorColBreak" : "AuthorNormal"
+          isSingleAuthor
+            ? "AuthorCentered"
+            : isBreak
+              ? "AuthorColBreak"
+              : "AuthorNormal"
         );
+
         authorSection.appendChild(el);
       }
 
